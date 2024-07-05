@@ -3,6 +3,7 @@ import numpy as np
 class Node:
     def __init__(
             self,
+            length: int,
             W_layer: np.ndarray,
             b_layer: np.ndarray,
             W_time: np.ndarray,
@@ -13,6 +14,7 @@ class Node:
         layer = from previous layer to this one
         time = from previous time step to this one
         """
+        self.length = length
         self.W_layer = W_layer
         self.b_layer = b_layer
         self.W_time = W_time
@@ -25,24 +27,49 @@ class Node:
             W_time: np.ndarray,
             b_time: np.ndarray
     ):
-        pass
+        self.W_layer = W_layer
+        self.b_layer = b_layer
+        self.W_time = W_time
+        self.b_time = b_time
 
     def feed_forward(
             self,
             h_layer: np.ndarray,
-            h_time: np.ndarray
+            h_time: np.ndarray = None
     ):
         """
-        h_layer/h_time = output from node at previous layer/time
+        h_layer/h_time: Output from node at previous layer/time
+        first_node: True if this is the first node of the layer.
+
+        h_shape = (n_batch, input_length)
         """
-        pass
+        num_inputs = h_layer.shape[0]
+
+        ## Compute weighted sum z for this node
+        z_layer = self.W_layer * h_layer + self.b_layer
+
+        if h_time is None:
+            # This node is at the first time step, thus not receiving any input from previous time steps.
+            z_time = np.zeros(num_inputs, self.length)
+        else:
+            z_time = self.W_time * h_time + self.b_time
+        
+        z_output = z_layer + z_time
+
+        ## Compute activation of the node
+        h_output = self.act_func(z_output)
+
+        return h_output
+        
 
     def backpropagate(
             self,
             dC_layer: np.ndarray,
-            dC_time: np.ndarray
+            dC_time: np.ndarray,
+            last_node: bool
     ):
         """
         dC_layer/dC_time = Contribution of cost gradient w.r.t. this node from node at next layer/time
+        last_node: True if this is the last node of the layer.
         """
         pass
