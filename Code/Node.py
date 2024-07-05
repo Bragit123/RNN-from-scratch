@@ -1,9 +1,11 @@
+from collections.abc import Callable
 import numpy as np
 
 class Node:
     def __init__(
             self,
             length: int,
+            act_func: Callable[[np.ndarray], np.ndarray],
             W_layer: np.ndarray,
             b_layer: np.ndarray,
             W_time: np.ndarray,
@@ -15,6 +17,7 @@ class Node:
         time = from previous time step to this one
         """
         self.length = length
+        self.act_func = act_func
         self.W_layer = W_layer
         self.b_layer = b_layer
         self.W_time = W_time
