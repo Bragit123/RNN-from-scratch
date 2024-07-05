@@ -16,3 +16,27 @@ class RNNLayer(Layer):
         time = between time steps in the layer
         """
         super(W_layer, b_layer, W_time, b_time)
+    
+    def initialize_weights(self):
+        pass
+
+    def update_weights_all_nodes(
+            self,
+            new_W_layer: np.ndarray,
+            new_b_layer: np.ndarray,
+            new_W_time: np.ndarray,
+            new_b_time: np.ndarray
+    ):
+        pass
+
+    def feed_forward(
+            self,
+            X: np.ndarray
+    ):
+        pass
+    
+    def backpropagate(
+            self,
+            dC: np.ndarray
+    ):
+        pass

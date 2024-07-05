@@ -18,6 +18,18 @@ class Layer:
         self.W_time = W_time
         self.b_time = b_time
     
+    def initialize_weights(self):
+        raise NotImplementedError
+    
+    def update_weights_all_nodes(
+            self,
+            new_W_layer: np.ndarray,
+            new_b_layer: np.ndarray,
+            new_W_time: np.ndarray,
+            new_b_time: np.ndarray
+    ):
+        raise NotImplementedError
+
     def feed_forward(
             self,
             X: np.ndarray
