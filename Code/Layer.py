@@ -1,5 +1,5 @@
-from collections.abc import Callable
 from __future__ import annotations # Necessary to create typing hint of Layer within the class Layer
+from collections.abc import Callable
 from Node import Node
 import numpy as np
 

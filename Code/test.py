@@ -1,5 +1,6 @@
 import numpy as np
 from funcs import sigmoid, identity
+from InputLayer import InputLayer
 from RNNLayer import RNNLayer
 from Node import Node
 
@@ -60,32 +61,26 @@ input_node3.output = np.random.uniform(size=(5,3))
 input_layer.nodes = [input_node1, input_node2, input_node3]
 input_layer.n_nodes = 3 
 
+X = np.random.uniform(size=(5,4,3))
+input_layer = InputLayer(X)
+
 hidden_layer = RNNLayer(2, 3, identity)
 hidden_layer.reset_weights()
 
 hidden_layer.feed_forward(input_layer)
 
 print("Input:")
-print(f"   W_layer =")
-print(input_layer.W_layer)
-print()
-print(f"   b_layer =")
-print(input_layer.b_layer)
-print()
-print(f"   W_time =")
-print(input_layer.W_time)
-print()
-print(f"   b_time =")
-print(input_layer.b_time)
-print()
 print(f"   x1 =")
-print(input_node1.get_output())
+print(input_layer.nodes[0].get_output())
 print()
 print(f"   x2 =")
-print(input_node2.get_output())
+print(input_layer.nodes[1].get_output())
 print()
 print(f"   x3 =")
-print(input_node3.get_output())
+print(input_layer.nodes[2].get_output())
+print()
+print(f"   x4 =")
+print(input_layer.nodes[3].get_output())
 
 print()
 print()
@@ -112,5 +107,8 @@ print(hidden_layer.nodes[1].get_output())
 print()
 print(f"   h3 =")
 print(hidden_layer.nodes[2].get_output())
+print()
+print(f"   h4 =")
+print(hidden_layer.nodes[3].get_output())
 print()
 print(f"   n_nodes = {hidden_layer.n_nodes}")
