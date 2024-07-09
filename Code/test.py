@@ -27,7 +27,8 @@ b_time = np.array([
     [0, 1, 2]
 ])
 
-node = Node(3, identity, W_layer, b_layer, W_time, b_time)
+node = Node(3, identity, None, None, None, None)
+node.set_Wb(W_layer, b_layer, W_time, b_time)
 
 h_layer = np.array([
     [1, 5, 1],

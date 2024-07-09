@@ -16,6 +16,7 @@ class Node:
         W = weights, b = bias
         _layer = from previous layer to this one
         _time = from previous time step to this one
+        output = output from feed_forward through this node
         """
         self.length = length
         self.act_func = act_func
@@ -23,6 +24,8 @@ class Node:
         self.b_layer = b_layer
         self.W_time = W_time
         self.b_time = b_time
+
+        self.output = None
     
     def set_Wb(
             self,
@@ -35,6 +38,9 @@ class Node:
         self.b_layer = b_layer
         self.W_time = W_time
         self.b_time = b_time
+    
+    def get_output(self):
+        return self.output
 
     def feed_forward(
             self,
@@ -63,7 +69,8 @@ class Node:
         ## Compute activation of the node
         h_output = self.act_func(z_output)
 
-        return h_output
+        self.output = h_output # Save the output in the node
+        return h_output # Return output
         
 
     def backpropagate(

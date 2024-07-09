@@ -9,7 +9,7 @@ class RNN:
         self.layers = []
         self.seed = seed
     
-    def initialize_weights(self):
+    def reset_weights(self):
         pass
 
     def feed_forward(

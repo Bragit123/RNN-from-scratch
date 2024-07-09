@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from Node import Node
 import numpy as np
 
@@ -7,18 +8,25 @@ class Layer:
     """
     def __init__(
             self,
-            W_layer: np.ndarray,
-            b_layer: np.ndarray,
-            W_time: np.ndarray,
-            b_time: np.ndarray
+            length: int,
+            length_prev: int,
+            act_func: Callable[[np.ndarray], np.ndarray],
+            seed: int = 100
     ):
         self.nodes = []
-        self.W_layer = W_layer
-        self.b_layer = b_layer
-        self.W_time = W_time
-        self.b_time = b_time
+        self.length = length
+        self.length_prev = length_prev
+        self.act_func = act_func
+        self.seed = seed
+        
+        self.W_layer_size = (self.length_prev, self.length)
+        self.b_layer_size = (1, self.length)
+        self.W_time_size = (self.length, self.length)
+        self.b_time_size = (1, self.length)
+
+        self.n_nodes = 0
     
-    def initialize_weights(self):
+    def reset_weights(self):
         raise NotImplementedError
     
     def update_weights_all_nodes(
