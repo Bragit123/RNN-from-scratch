@@ -15,7 +15,7 @@ class RNNLayer(Layer):
         layer = from previous layer to this one
         time = between time steps in the layer
         """
-        super(W_layer, b_layer, W_time, b_time)
+        super(self, W_layer, b_layer, W_time, b_time)
     
     def initialize_weights(self):
         pass

@@ -1,22 +1,44 @@
 import numpy as np
-import pandas as pd
+from funcs import sigmoid, identity
+from Node import Node
 
-data = pd.read_csv("../data/clean_weather.csv", index_col=0)
+# length: int,
+#             act_func: Callable[[np.ndarray], np.ndarray],
+#             W_layer: np.ndarray,
+#             b_layer: np.ndarray,
+#             W_time: np.ndarray,
+#             b_time: np.ndarray
 
-x = data["tmax"].tail(3).to_numpy()
 
-print(x)
+W_layer = np.array([
+    [1, 0, 5],
+    [-3, 2, 0],
+    [5, 1, 2]
+])
+b_layer = np.array([
+    [3, 0, 1]
+])
+W_time = np.array([
+    [0, 2, 0],
+    [-1, 7, 3],
+    [7, 0, 1]
+])
+b_time = np.array([
+    [0, 1, 2]
+])
 
-np.random.seed(100)
-Whx = np.random.normal()
-Whh = np.random.normal()
-Wyh = np.random.normal()
-bh = 0.1*np.random.uniform()
-by = 0.1*np.random.uniform()
+node = Node(3, identity, W_layer, b_layer, W_time, b_time)
 
-hi = 0
-for i in range(3):
-    xi = x[i]
-    hi = Whx*xi + Whh*hi + bh
-    yi = Wyh * hi
-    print(f"{i} : xi = {xi:.0f} ; hi = {hi:.0f} ; yi = {yi:.0f}")
+h_layer = np.array([
+    [1, 5, 1],
+    [1, 7, 8],
+    [10, 12, 9]
+])
+h_time = np.array([
+    [3,1,2],
+    [1,6,7],
+    [3,2,1]
+])
+
+h_next = node.feed_forward(h_layer, h_time)
+print(h_next)

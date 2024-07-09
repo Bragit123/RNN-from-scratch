@@ -12,9 +12,10 @@ class Node:
             b_time: np.ndarray
     ):
         """
+        length = length of vector h at this node
         W = weights, b = bias
-        layer = from previous layer to this one
-        time = from previous time step to this one
+        _layer = from previous layer to this one
+        _time = from previous time step to this one
         """
         self.length = length
         self.act_func = act_func
@@ -48,14 +49,14 @@ class Node:
         """
         num_inputs = h_layer.shape[0]
 
-        ## Compute weighted sum z for this node
-        z_layer = self.W_layer * h_layer + self.b_layer
+        ## Compute weighted sum z for this node.
+        z_layer = h_layer @ self.W_layer + self.b_layer # Dimension example: (100,5)@(5,7) + (7) = (100,7)
 
         if h_time is None:
             # This node is at the first time step, thus not receiving any input from previous time steps.
-            z_time = np.zeros(num_inputs, self.length)
+            z_time = np.zeros((num_inputs, self.length))
         else:
-            z_time = self.W_time * h_time + self.b_time
+            z_time = h_time @ self.W_time + self.b_time
         
         z_output = z_layer + z_time
 
