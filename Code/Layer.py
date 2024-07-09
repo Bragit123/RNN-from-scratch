@@ -29,6 +29,9 @@ class Layer:
     def reset_weights(self):
         raise NotImplementedError
     
+    def update_weights(self):
+        raise NotImplementedError
+    
     def update_weights_all_nodes(
             self,
             new_W_layer: np.ndarray,

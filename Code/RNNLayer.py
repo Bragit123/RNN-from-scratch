@@ -23,7 +23,7 @@ class RNNLayer(Layer):
         
         W_layer_size, b_layer_size, W_time_size, b_time_size = array shapes for the weights and biases
         """
-        super.__init__(self, length, length_prev, act_func, seed)
+        super().__init__(length, length_prev, act_func, seed)
 
         self.W_layer = None
         self.b_layer = None
@@ -42,6 +42,9 @@ class RNNLayer(Layer):
         self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
         self.W_time = np.random.normal(size=self.W_time_size)
         self.b_time = np.random.normal(size=self.b_time_size) * 0.01
+    
+    def update_weights(self):
+        pass
 
     def update_weights_all_nodes(
             self,
