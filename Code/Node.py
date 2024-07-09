@@ -1,15 +1,16 @@
 from collections.abc import Callable
+from funcs import identity
 import numpy as np
 
 class Node:
     def __init__(
             self,
             length: int,
-            act_func: Callable[[np.ndarray], np.ndarray],
-            W_layer: np.ndarray,
-            b_layer: np.ndarray,
-            W_time: np.ndarray,
-            b_time: np.ndarray
+            act_func: Callable[[np.ndarray], np.ndarray] = identity,
+            W_layer: np.ndarray = None,
+            b_layer: np.ndarray = None,
+            W_time: np.ndarray = None,
+            b_time: np.ndarray = None
     ):
         """
         length = length of vector h at this node
@@ -41,6 +42,9 @@ class Node:
     
     def get_output(self):
         return self.output
+    
+    def set_output(self, output: np.ndarray):
+        self.output = output
 
     def feed_forward(
             self,
@@ -69,7 +73,7 @@ class Node:
         ## Compute activation of the node
         h_output = self.act_func(z_output)
 
-        self.output = h_output # Save the output in the node
+        self.set_output(h_output) # Save the output in the node
         return h_output # Return output
         
 

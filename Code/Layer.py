@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from __future__ import annotations # Necessary to create typing hint of Layer within the class Layer
 from Node import Node
 import numpy as np
 
@@ -40,10 +41,16 @@ class Layer:
             new_b_time: np.ndarray
     ):
         raise NotImplementedError
+    
+    def add_node(self):
+        raise NotImplementedError
+    
+    def remove_nodes(self):
+        raise NotImplementedError
 
     def feed_forward(
             self,
-            X: np.ndarray
+            prev_layer: Layer
     ):
         raise NotImplementedError
     

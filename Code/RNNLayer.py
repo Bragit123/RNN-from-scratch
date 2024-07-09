@@ -75,6 +75,7 @@ class RNNLayer(Layer):
             each call of feed_forward().
         """
         self.nodes = []
+        self.n_nodes = 0
 
     def feed_forward(
             self,
