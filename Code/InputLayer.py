@@ -9,17 +9,21 @@ class InputLayer(Layer):
             n_features: int
     ):
         """
-        n_features
+        n_features = number of features expected from the input.
         """
         self.nodes = []
         self.n_nodes = 0
         self.n_features = n_features
+        self.W_layer = None
+        self.b_layer = None
+        self.W_time = None
+        self.b_time = None
     
     def reset_weights(self):
         """
-        This method should not be called in the input layer.
+        Input layer has no weights, so this method does nothing
         """
-        print("WARNING: reset_weights() was called in InputLayer. This should not be necessary.")
+        pass
     
     def update_weights(self):
         """

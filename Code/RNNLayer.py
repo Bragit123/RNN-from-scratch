@@ -14,6 +14,7 @@ class RNNLayer(Layer):
         """
         n_features = number of features in this layer
         n_features_prev = number of features in the previous layer
+        act_func = activation function for this layer
         seed = numpy random seed
 
         W_layer, b_layer, W_time, b_time:
