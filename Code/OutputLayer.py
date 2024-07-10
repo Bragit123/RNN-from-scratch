@@ -3,7 +3,7 @@ from Layer import Layer
 from Node import Node
 import numpy as np
  
-class RNNLayer(Layer):
+class OutputLayer(Layer):
     def __init__(
             self,
             length: int,
