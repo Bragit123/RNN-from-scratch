@@ -5,7 +5,7 @@ import numpy as np
 class Node:
     def __init__(
             self,
-            length: int,
+            n_features: int,
             act_func: Callable[[np.ndarray], np.ndarray] = identity,
             W_layer: np.ndarray = None,
             b_layer: np.ndarray = None,
@@ -13,13 +13,13 @@ class Node:
             b_time: np.ndarray = None
     ):
         """
-        length = length of vector h at this node
+        n_features = number of features for this node
         W = weights, b = bias
         _layer = from previous layer to this one
         _time = from previous time step to this one
         output = output from feed_forward through this node
         """
-        self.length = length
+        self.n_features = n_features
         self.act_func = act_func
         self.W_layer = W_layer
         self.b_layer = b_layer
@@ -53,9 +53,7 @@ class Node:
     ):
         """
         h_layer/h_time: Output from node at previous layer/time
-        first_node: True if this is the first node of the layer.
-
-        h_shape = (n_batch, input_length)
+        h_shape = (n_batches, n_features)
         """
         num_inputs = h_layer.shape[0]
 
@@ -64,7 +62,7 @@ class Node:
 
         if h_time is None:
             # This node is at the first time step, thus not receiving any input from previous time steps.
-            z_time = np.zeros((num_inputs, self.length))
+            z_time = np.zeros((num_inputs, self.n_features))
         else:
             z_time = h_time @ self.W_time + self.b_time
         

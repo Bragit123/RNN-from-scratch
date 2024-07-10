@@ -7,7 +7,8 @@ from Node import Node
 
 np.random.seed(100)
 X = np.random.uniform(size=(4,10,3))
-input_layer = InputLayer(X)
+input_layer = InputLayer(3)
+input_layer.feed_forward(X)
 
 hidden_layer = RNNLayer(2, 3, identity)
 hidden_layer.reset_weights()

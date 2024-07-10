@@ -1,4 +1,8 @@
 from Layer import Layer
+from InputLayer import InputLayer
+from OutputLayer import OutputLayer
+from RNNLayer import RNNLayer
+from Node import Node
 import numpy as np
 
 class RNN:

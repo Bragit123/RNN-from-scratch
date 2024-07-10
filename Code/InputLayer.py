@@ -6,22 +6,14 @@ import numpy as np
 class InputLayer(Layer):
     def __init__(
             self,
-            X: np.ndarray
+            n_features: int
     ):
         """
-        X = input to RNN.
-        X_shape = (batch_size, sequence_length, num_features)
+        n_features
         """
         self.nodes = []
-        X_shape = X.shape
-        sequence_length = X_shape[1]
-        self.length = X_shape[2]
         self.n_nodes = 0
-
-        # Add a node to the layer for each time step, and set output
-        for i in range(sequence_length):
-            self.add_node()
-            self.nodes[i].set_output(X[:,i,:])
+        self.n_features = n_features
     
     def reset_weights(self):
         """
@@ -52,7 +44,7 @@ class InputLayer(Layer):
         Add a node. Weights and biases are set to None, and activation to identity by default,
         as none of these are relevant for the input layer.
         """
-        new_node = Node(self.length) # Activation and weights are not used for the input layer
+        new_node = Node(self.n_features) # Activation and weights are not used for the input layer
         self.nodes.append(new_node)
         self.n_nodes += 1
 
@@ -65,12 +57,26 @@ class InputLayer(Layer):
 
     def feed_forward(
             self,
-            prev_layer: Layer
+            X: np.ndarray
     ):
         """
-        This method should not be called in the input layer.
+        X = input to RNN.
+        X_shape = (batch_size, sequence_length, n_features)
+        NOTE: Unlike the other layers, this layer takes a numpy array as input instead of a Layer.
         """
-        print("WARNING: feed_forward() was called in InputLayer. This should not be necessary.")
+        X_shape = X.shape
+        sequence_length = X_shape[1]
+        
+        if not self.n_features == X_shape[2]:
+            # Input must have the same number of features as defined by the layer
+            raise ValueError(f"Expected number of features in input layer to be {self.n_features}, got {X_shape[2]}")
+
+        self.remove_nodes()
+        
+        # Add a node to the layer for each time step, and set output
+        for i in range(sequence_length):
+            self.add_node()
+            self.nodes[i].set_output(X[:,i,:])
     
     def backpropagate(
             self,

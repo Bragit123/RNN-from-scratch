@@ -6,14 +6,14 @@ import numpy as np
 class OutputLayer(Layer):
     def __init__(
             self,
-            length: int,
-            length_prev: int,
+            n_features: int,
+            n_features_prev: int,
             act_func: Callable[[np.ndarray], np.ndarray],
             seed: int = 100
     ):
         """
-        length = length of all the h's in this layer
-        length_prev = length of all the h's in the previous layer
+        n_features = number of features in this layer
+        n_features_prev = number of features in the previous layer
         seed = numpy random seed
 
         W_layer, b_layer, W_time, b_time:
@@ -23,7 +23,7 @@ class OutputLayer(Layer):
         
         W_layer_size, b_layer_size, W_time_size, b_time_size = array shapes for the weights and biases
         """
-        super().__init__(length, length_prev, act_func, seed)
+        super().__init__(n_features, n_features_prev, act_func, seed)
 
         self.W_layer = None
         self.b_layer = None
@@ -63,7 +63,7 @@ class OutputLayer(Layer):
         """
         Add a node with the weights and biases specified by layer
         """
-        new_node = Node(self.length, self.act_func, self.W_layer, self.b_layer, self.W_time, self.b_time)
+        new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer, self.W_time, self.b_time)
         self.nodes.append(new_node)
         self.n_nodes += 1
     
@@ -71,7 +71,7 @@ class OutputLayer(Layer):
         """
         Remove all the nodes created for this layer.
         NOTE: The weights and biases of the nodes are still stored in the layer, so we can easily
-            create new nodes. Removing the nodes is used to allow the input length to vary with
+            create new nodes. Removing the nodes is used to allow the sequence length to vary with
             each call of feed_forward().
         """
         self.nodes = []

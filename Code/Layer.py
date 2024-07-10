@@ -9,21 +9,21 @@ class Layer:
     """
     def __init__(
             self,
-            length: int,
-            length_prev: int,
+            n_features: int,
+            n_features_prev: int,
             act_func: Callable[[np.ndarray], np.ndarray],
             seed: int = 100
     ):
         self.nodes = []
-        self.length = length
-        self.length_prev = length_prev
+        self.n_features = n_features
+        self.n_features_prev = n_features_prev
         self.act_func = act_func
         self.seed = seed
         
-        self.W_layer_size = (self.length_prev, self.length)
-        self.b_layer_size = (1, self.length)
-        self.W_time_size = (self.length, self.length)
-        self.b_time_size = (1, self.length)
+        self.W_layer_size = (self.n_features_prev, self.n_features)
+        self.b_layer_size = (1, self.n_features)
+        self.W_time_size = (self.n_features, self.n_features)
+        self.b_time_size = (1, self.n_features)
 
         self.n_nodes = 0
     
