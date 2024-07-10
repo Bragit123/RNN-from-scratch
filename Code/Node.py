@@ -1,5 +1,6 @@
 from collections.abc import Callable
-from funcs import identity
+from funcs import identity, derivate
+from jax import vmap
 import numpy as np
 
 class Node:
@@ -26,7 +27,19 @@ class Node:
         self.W_time = W_time
         self.b_time = b_time
 
-        self.output = None
+        ## Values from feed_forward()
+        self.h_layer = None # h from previous layer
+        self.h_time = None # h from previous time step
+        self.z_output = None # z for this node
+        self.h_output = None # h from this node
+
+        ## Values from backpropagate()
+        self.grad_b_layer = None
+        self.grad_b_time = None
+        self.grad_W_layer = None
+        self.grad_W_time = None
+        self.grad_h_layer = None
+        self.grad_h_time = None
     
     def set_Wb(
             self,
@@ -41,10 +54,10 @@ class Node:
         self.b_time = b_time
     
     def get_output(self):
-        return self.output
+        return self.h_output
     
     def set_output(self, output: np.ndarray):
-        self.output = output
+        self.h_output = output
 
     def feed_forward(
             self,
@@ -55,6 +68,10 @@ class Node:
         h_layer/h_time: Output from node at previous layer/time
         h_shape = (n_batches, n_features)
         """
+        ## Save h_layer and h_time for use in backpropagation
+        self.h_layer = h_layer
+        self.h_time = h_time
+
         num_inputs = h_layer.shape[0]
 
         ## Compute weighted sum z for this node.
@@ -66,23 +83,48 @@ class Node:
         else:
             z_time = h_time @ self.W_time + self.b_time
         
-        z_output = z_layer + z_time
+        self.z_output = z_layer + z_time # Save the weighted sum in the node
 
         ## Compute activation of the node
-        h_output = self.act_func(z_output)
+        h_output = self.act_func(self.z_output)
 
-        self.set_output(h_output) # Save the output in the node
+        self.h_output = h_output # Save the output in the node
         return h_output # Return output
         
 
     def backpropagate(
             self,
             dC_layer: np.ndarray,
-            dC_time: np.ndarray,
-            last_node: bool
+            dC_time: np.ndarray = None
     ):
         """
         dC_layer/dC_time = Contribution of cost gradient w.r.t. this node from node at next layer/time
-        last_node: True if this is the last node of the layer.
+        dC_shape = (n_batches, n_features), i.e., the same as h_shape in feed_forward
         """
-        pass
+        ## Total gradient is the sum of the gradient from "next" layer and time
+        if dC_time is None:
+            # If this is the last node in the layer, the gradient is just the gradient from the next layer
+            dC = dC_layer
+        else:
+            dC = dC_layer + dC_time
+        
+        ## delta (gradient of cost w.r.t. z)
+        grad_act = vmap(vmap(derivate(self.act_func)))(self.z_output) # vmap is necessary for jax to vectorize gradient properly
+        delta = grad_act * dC # Hadamard product, i.e., elementwise multiplication
+
+        ## Gradients w.r.t. bias
+        self.grad_b_layer = delta
+        self.grad_b_time = delta
+
+        ## Gradients w.r.t. weights
+        print(self.h_layer)
+        print(delta)
+        # Need to transpose h and not delta in order for matrices to match up correctly, since we have batches along rows, and features along columns
+        self.grad_W_layer = self.h_layer.T @ delta
+        self.grad_W_time = self.h_time.T @ delta
+
+        ## Gradients w.r.t. input from previous nodes
+        # Need to transpose not transpose delta in order for matrices to match up correctly, since we have batches along rows, and features along columns
+        self.grad_h_layer = delta @ self.W_layer.T
+        self.grad_h_time = delta @ self.W_time.T
+

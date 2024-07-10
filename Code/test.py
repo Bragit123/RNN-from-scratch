@@ -6,6 +6,8 @@ from RNNLayer import RNNLayer
 from OutputLayer import OutputLayer
 from Node import Node
 
+print("##### FEED FORWARD #####")
+
 rnn = RNN()
 rnn.add_InputLayer(3)
 rnn.add_RNNLayer(2, sigmoid)
@@ -13,7 +15,7 @@ rnn.add_OutputLayer(3, sigmoid)
 rnn.reset_weights()
 
 np.random.seed(100)
-X = np.random.uniform(size=(2,4,3))
+X = np.random.uniform(size=(5,4,3))
 rnn.feed_forward(X)
 
 for i in range(rnn.n_layers):
@@ -35,60 +37,17 @@ for i in range(rnn.n_layers):
         print(f"({i},{j}):")
         print(node.get_output())
 
-# input_layer = InputLayer(3)
-# input_layer.feed_forward(X)
 
-# hidden_layer = RNNLayer(2, 3, identity)
-# hidden_layer.reset_weights()
-# hidden_layer.feed_forward(input_layer)
+print()
+print()
+print()
+print("##### BACKPROPAGATION #####")
 
-# output_layer = OutputLayer(3, 2, identity)
-# output_layer.reset_weights()
-# output_layer.feed_forward(hidden_layer)
+node_last = rnn.layers[1].nodes[-1]
+node_next_last = rnn.layers[1].nodes[-2]
 
-# print("Input:")
-# for i in range(input_layer.n_nodes):
-#     print(f"   x[{i}] =")
-#     print(input_layer.nodes[i].get_output())
-#     print()
+dC_layer = np.random.uniform(size=(2, 5, 2))
+dC_layer_last = dC_layer[0,:,:]
+dC_layer_next_last = dC_layer[1,:,:]
 
-# print()
-# print()
-
-# print("Hidden:")
-# print(f"   W_layer =")
-# print(hidden_layer.W_layer)
-# print()
-# print(f"   b_layer =")
-# print(hidden_layer.b_layer)
-# print()
-# print(f"   W_time =")
-# print(hidden_layer.W_time)
-# print()
-# print(f"   b_time =")
-# print(hidden_layer.b_time)
-# print()
-# for i in range(hidden_layer.n_nodes):
-#     print(f"   h[{i}] =")
-#     print(hidden_layer.nodes[i].get_output())
-#     print()
-
-# print()
-# print()
-
-# print("Output:")
-# print(f"   W_layer =")
-# print(output_layer.W_layer)
-# print()
-# print(f"   b_layer =")
-# print(output_layer.b_layer)
-# print()
-# print(f"   W_time =")
-# print(output_layer.W_time)
-# print()
-# print(f"   b_time =")
-# print(output_layer.b_time)
-# print()
-# for i in range(output_layer.n_nodes):
-#     print(f"   o[{i}] =")
-#     print(output_layer.nodes[i].get_output())
+node_last.backpropagate(dC_layer_last, None)
