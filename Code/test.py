@@ -8,8 +8,8 @@ from Node import Node
 
 rnn = RNN()
 rnn.add_InputLayer(3)
-rnn.add_RNNLayer(2, identity)
-rnn.add_OutputLayer(3, identity)
+rnn.add_RNNLayer(2, sigmoid)
+rnn.add_OutputLayer(3, sigmoid)
 rnn.reset_weights()
 
 np.random.seed(100)
