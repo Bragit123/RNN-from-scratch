@@ -50,4 +50,13 @@ dC_layer = np.random.uniform(size=(2, 5, 2))
 dC_layer_last = dC_layer[0,:,:]
 dC_layer_next_last = dC_layer[1,:,:]
 
+print(f"dC_layer_last = {dC_layer_last}")
+
 node_last.backpropagate(dC_layer_last, None)
+
+print(f"grad_b_layer = {node_last.grad_b_layer}")
+print(f"grad_b_time = {node_last.grad_b_time}")
+print(f"grad_W_layer = {node_last.grad_W_layer}")
+print(f"grad_W_time = {node_last.grad_W_time}")
+print(f"grad_h_layer = {node_last.grad_h_layer}")
+print(f"grad_h_time = {node_last.grad_h_time}")
