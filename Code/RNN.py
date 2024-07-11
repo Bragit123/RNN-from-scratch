@@ -71,7 +71,8 @@ class RNN:
     def add_OutputLayer(
             self,
             n_features: int,
-            act_func: Callable[[np.ndarray], np.ndarray]
+            act_func: Callable[[np.ndarray], np.ndarray],
+            scheduler: Scheduler
     ):
         """
         n_features = number of features in this layer
@@ -81,7 +82,7 @@ class RNN:
         """
         prev_layer = self.layers[-1]
         n_features_prev = prev_layer.n_features
-        layer = OutputLayer(n_features, n_features_prev, act_func, self.seed)
+        layer = OutputLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
         self._add_layer(layer)
     
     def _add_layer(

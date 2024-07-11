@@ -16,7 +16,7 @@ scheduler = Adam(eta=0.1, rho=0.9, rho2=0.999)
 rnn = RNN()
 rnn.add_InputLayer(3)
 rnn.add_RNNLayer(2, act_func, scheduler)
-rnn.add_OutputLayer(3, act_func)
+rnn.add_OutputLayer(3, act_func, scheduler)
 rnn.reset_weights()
 
 np.random.seed(100)
@@ -49,14 +49,10 @@ print()
 print("##### BACKPROPAGATION #####")
 
 last_layer = rnn.layers[-1]
-grad_layer = np.random.uniform(size=(last_layer.n_nodes, 5, 2))
-for i in range(last_layer.n_nodes):
-    node = last_layer.nodes[i]
-    node.grad_h_layer = grad_layer[i,:,:]
-
-print(f"grad_layer = {grad_layer}")
-
 hidden_layer = rnn.layers[1]
+
+dC = np.random.uniform(size=(5, last_layer.n_nodes, 3))
+last_layer.backpropagate(dC, lmbd=0.01)
 hidden_layer.backpropagate(last_layer, lmbd=0.01)
 
 for i in range(hidden_layer.n_nodes):

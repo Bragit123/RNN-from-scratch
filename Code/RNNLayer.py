@@ -146,3 +146,5 @@ class RNNLayer(Layer):
             self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
             if grad_b_time is not None:
                 self.b_time -= self.scheduler_b_time.update_change(grad_b_time)
+        
+        self.update_weights_all_nodes()

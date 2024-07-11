@@ -1,4 +1,6 @@
 from collections.abc import Callable
+from copy import copy
+from schedulers import Scheduler
 from Layer import Layer
 from Node import Node
 import numpy as np
@@ -9,6 +11,7 @@ class OutputLayer(Layer):
             n_features: int,
             n_features_prev: int,
             act_func: Callable[[np.ndarray], np.ndarray],
+            scheduler: Scheduler,
             seed: int = 100
     ):
         """
@@ -30,6 +33,9 @@ class OutputLayer(Layer):
         self.b_layer = None
         self.W_time = None
         self.b_time = None
+
+        self.scheduler_W_layer = copy(scheduler)
+        self.scheduler_b_layer = copy(scheduler)
         
         self.reset_weights()
     
@@ -99,6 +105,29 @@ class OutputLayer(Layer):
     
     def backpropagate(
             self,
-            dC: np.ndarray
+            dC: np.ndarray,
+            lmbd: float = 0.01
     ):
-        pass
+        """
+        dC = Gradient of the cost function for the specific target
+        dC_shape = (batch_size, sequence_length, n_features)
+        NOTE: Unlike the other layers, this layer takes a numpy array as input instead of a Layer.
+        """
+        dC_shape = dC.shape
+        sequence_length = dC_shape[1]
+        
+        ## Go through all nodes
+        for i in range(self.n_nodes):            
+            ## Backpropagate through this node. Results are stored in the nodes
+            node = self.nodes[i]
+            dC_layer = dC[:,i,:] # Treat dC as coming from a subsequent layer
+            node.backpropagate(dC_layer, None, lmbd) # No time gradient in the output layer
+
+            ## Update weights and biases (no time gradient in output layer)
+            grad_W_layer = node.grad_W_layer
+            grad_b_layer = node.grad_b_layer
+
+            self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
+            self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
+        
+        self.update_weights_all_nodes()
