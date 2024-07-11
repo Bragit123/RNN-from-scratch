@@ -1,6 +1,7 @@
 import numpy as np
 from funcs import sigmoid, identity
 from RNN import RNN
+from schedulers import Constant, Adam
 from InputLayer import InputLayer
 from RNNLayer import RNNLayer
 from OutputLayer import OutputLayer
@@ -8,10 +9,13 @@ from Node import Node
 
 print("##### FEED FORWARD #####")
 
+act_func = sigmoid
+scheduler = Constant(eta=0.1)
+
 rnn = RNN()
 rnn.add_InputLayer(3)
-rnn.add_RNNLayer(2, sigmoid)
-rnn.add_OutputLayer(3, sigmoid)
+rnn.add_RNNLayer(2, act_func, scheduler)
+rnn.add_OutputLayer(3, act_func)
 rnn.reset_weights()
 
 np.random.seed(100)
@@ -43,20 +47,24 @@ print()
 print()
 print("##### BACKPROPAGATION #####")
 
-node_last = rnn.layers[1].nodes[-1]
-node_next_last = rnn.layers[1].nodes[-2]
+last_layer = rnn.layers[-1]
+grad_layer = np.random.uniform(size=(last_layer.n_nodes, 5, 2))
+for i in range(last_layer.n_nodes):
+    node = last_layer.nodes[i]
+    node.grad_h_layer = grad_layer[i,:,:]
 
-dC_layer = np.random.uniform(size=(2, 5, 2))
-dC_layer_last = dC_layer[0,:,:]
-dC_layer_next_last = dC_layer[1,:,:]
+print(f"grad_layer = {grad_layer}")
 
-print(f"dC_layer_last = {dC_layer_last}")
+hidden_layer = rnn.layers[1]
+hidden_layer.backpropagate(last_layer, lmbd=0.01)
 
-node_last.backpropagate(dC_layer_last, None)
-
-print(f"grad_b_layer = {node_last.grad_b_layer}")
-print(f"grad_b_time = {node_last.grad_b_time}")
-print(f"grad_W_layer = {node_last.grad_W_layer}")
-print(f"grad_W_time = {node_last.grad_W_time}")
-print(f"grad_h_layer = {node_last.grad_h_layer}")
-print(f"grad_h_time = {node_last.grad_h_time}")
+for i in range(hidden_layer.n_nodes):
+    node = hidden_layer.nodes[i]
+    print(f"i = {i}")
+    print(f"grad_b_layer = {node.grad_b_layer}")
+    print(f"grad_b_time = {node.grad_b_time}")
+    print(f"grad_W_layer = {node.grad_W_layer}")
+    print(f"grad_W_time = {node.grad_W_time}")
+    print(f"grad_h_layer = {node.grad_h_layer}")
+    print(f"grad_h_time = {node.grad_h_time}")
+    print()

@@ -119,7 +119,7 @@ class RNNLayer(Layer):
     def backpropagate(
             self,
             next_layer: Layer,
-            lmbd: float
+            lmbd: float = 0.01
     ):
         ## Go through all nodes, starting with the last
         for i in range(self.n_nodes-1, -1, -1):
@@ -143,7 +143,11 @@ class RNNLayer(Layer):
             grad_W_time = node.grad_W_time
             grad_b_layer = node.grad_b_layer
             grad_b_time = node.grad_b_time
+            
             self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
-            self.W_time -= self.scheduler_W_time.update_change(grad_W_time)
+            if grad_W_time is not None:
+                self.W_time -= self.scheduler_W_time.update_change(grad_W_time)
+            
             self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
-            self.b_time -= self.scheduler_b_time.update_change(grad_b_time)
+            if grad_b_time is not None:
+                self.b_time -= self.scheduler_b_time.update_change(grad_b_time)

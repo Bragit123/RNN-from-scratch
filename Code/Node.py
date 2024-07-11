@@ -123,11 +123,18 @@ class Node:
         # Need to transpose h and not delta in order for matrices to match up correctly, since we have batches along rows, and features along columns
         self.grad_W_layer = self.h_layer.T @ delta / n_batches
         self.grad_W_layer = self.grad_W_layer + self.W_layer * lmbd # Regularization factor
-        self.grad_W_time = self.h_time.T @ delta / n_batches
-        self.grad_W_time = self.grad_W_time + self.W_time * lmbd # Regularization factor
+        
+        if self.h_time is None:
+            self.grad_W_time = None
+        else:
+            self.grad_W_time = self.h_time.T @ delta / n_batches
+            self.grad_W_time = self.grad_W_time + self.W_time * lmbd # Regularization factor
 
         ## Gradients w.r.t. input from previous nodes
         # Need to not transpose delta in order for matrices to match up correctly, since we have batches along rows, and features along columns
         self.grad_h_layer = delta @ self.W_layer.T
-        self.grad_h_time = delta @ self.W_time.T
+        if self.h_time is None:
+            self.grad_h_time = None
+        else:
+            self.grad_h_time = delta @ self.W_time.T
 

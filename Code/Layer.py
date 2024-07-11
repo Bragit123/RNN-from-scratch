@@ -56,6 +56,7 @@ class Layer:
     
     def backpropagate(
             self,
-            dC: np.ndarray
+            next_layer: Layer,
+            lmbd: float
     ):
         raise NotImplementedError
