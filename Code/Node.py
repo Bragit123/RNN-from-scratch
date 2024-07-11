@@ -102,6 +102,8 @@ class Node:
         dC_layer/dC_time = Contribution of cost gradient w.r.t. this node from node at next layer/time
         dC_shape = (n_batches, n_features), i.e., the same as h_shape in feed_forward
         """
+        n_batches = self.h_output.shape[0]
+        
         ## Total gradient is the sum of the gradient from "next" layer and time
         if dC_time is None:
             # If this is the last node in the layer, the gradient is just the gradient from the next layer
@@ -113,18 +115,19 @@ class Node:
         grad_act = vmap(vmap(derivate(self.act_func)))(self.z_output) # vmap is necessary for jax to vectorize gradient properly
         delta = grad_act * dC # Hadamard product, i.e., elementwise multiplication
 
-
         ## Gradients w.r.t. bias
-        self.grad_b_layer = np.sum(delta, axis=0)
-        self.grad_b_time = np.sum(delta, axis=0)
+        self.grad_b_layer = np.sum(delta, axis=0) / n_batches
+        self.grad_b_time = np.sum(delta, axis=0) / n_batches
 
         ## Gradients w.r.t. weights
         # Need to transpose h and not delta in order for matrices to match up correctly, since we have batches along rows, and features along columns
-        self.grad_W_layer = self.h_layer.T @ delta
-        self.grad_W_time = self.h_time.T @ delta
+        self.grad_W_layer = self.h_layer.T @ delta / n_batches
+        self.grad_W_layer = self.grad_W_layer + self.W_layer * lmbd # Regularization factor
+        self.grad_W_time = self.h_time.T @ delta / n_batches
+        self.grad_W_time = self.grad_W_time + self.W_time * lmbd # Regularization factor
 
         ## Gradients w.r.t. input from previous nodes
         # Need to not transpose delta in order for matrices to match up correctly, since we have batches along rows, and features along columns
-        self.grad_h_layer = np.sum(delta @ self.W_layer.T, axis=0)
-        self.grad_h_time = np.sum(delta @ self.W_time.T, axis=0)
+        self.grad_h_layer = delta @ self.W_layer.T
+        self.grad_h_time = delta @ self.W_time.T
 

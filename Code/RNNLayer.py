@@ -1,4 +1,6 @@
 from collections.abc import Callable
+from copy import copy
+from schedulers import Scheduler
 from Layer import Layer
 from Node import Node
 import numpy as np
@@ -9,6 +11,7 @@ class RNNLayer(Layer):
             n_features: int,
             n_features_prev: int,
             act_func: Callable[[np.ndarray], np.ndarray],
+            scheduler: Scheduler,
             seed: int = 100
     ):
         """
@@ -30,6 +33,11 @@ class RNNLayer(Layer):
         self.b_layer = None
         self.W_time = None
         self.b_time = None
+
+        self.scheduler_W_layer = copy(scheduler)
+        self.scheduler_W_time = copy(scheduler)
+        self.scheduler_b_layer = copy(scheduler)
+        self.scheduler_b_time = copy(scheduler)
         
         self.reset_weights()
     
@@ -110,6 +118,32 @@ class RNNLayer(Layer):
     
     def backpropagate(
             self,
-            dC: np.ndarray
+            next_layer: Layer,
+            lmbd: float
     ):
-        pass
+        ## Go through all nodes, starting with the last
+        for i in range(self.n_nodes-1, -1, -1):
+            ## Gradient from node at next layer
+            node_layer = next_layer.nodes[i]
+            dC_layer = node_layer.grad_h_layer
+
+            ## Gradient from node at next time step (unless this is the last node)
+            if i == self.n_nodes-1:
+                dC_time = None
+            else:
+                node_time = self.nodes[i+1]
+                dC_time = node_time.grad_h_time
+            
+            ## Backpropagate through this node. Results are stored in the nodes
+            node = self.nodes[i]
+            node.backpropagate(dC_layer, dC_time, lmbd)
+
+            ## Update weights and biases
+            grad_W_layer = node.grad_W_layer
+            grad_W_time = node.grad_W_time
+            grad_b_layer = node.grad_b_layer
+            grad_b_time = node.grad_b_time
+            self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
+            self.W_time -= self.scheduler_W_time.update_change(grad_W_time)
+            self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
+            self.b_time -= self.scheduler_b_time.update_change(grad_b_time)
