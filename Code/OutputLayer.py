@@ -43,19 +43,14 @@ class OutputLayer(Layer):
         self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
         self.W_time = None
         self.b_time = None
-    
-    def update_weights(self):
-        pass
 
-    def update_weights_all_nodes(
-            self,
-            new_W_layer: np.ndarray,
-            new_b_layer: np.ndarray
-    ):
+    def update_weights_all_nodes(self):
         """
         Update the weights and biases in all nodes of the layer.
         """
+        new_W_layer = self.W_layer
         new_W_time = None
+        new_b_layer = self.b_layer
         new_b_time = None
         for node in self.nodes:
             node.set_Wb(new_W_layer, new_b_layer, new_W_time, new_b_time)

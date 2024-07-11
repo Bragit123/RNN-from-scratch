@@ -51,20 +51,15 @@ class RNNLayer(Layer):
         self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
         self.W_time = np.random.normal(size=self.W_time_size)
         self.b_time = np.random.normal(size=self.b_time_size) * 0.01
-    
-    def update_weights(self):
-        pass
 
-    def update_weights_all_nodes(
-            self,
-            new_W_layer: np.ndarray,
-            new_b_layer: np.ndarray,
-            new_W_time: np.ndarray,
-            new_b_time: np.ndarray
-    ):
+    def update_weights_all_nodes(self):
         """
         Update the weights and biases in all nodes of the layer.
         """
+        new_W_layer = self.W_layer
+        new_W_time = self.W_time
+        new_b_layer = self.b_layer
+        new_b_time = self.b_time
         for node in self.nodes:
             node.set_Wb(new_W_layer, new_b_layer, new_W_time, new_b_time)
     
@@ -143,7 +138,7 @@ class RNNLayer(Layer):
             grad_W_time = node.grad_W_time
             grad_b_layer = node.grad_b_layer
             grad_b_time = node.grad_b_time
-            
+
             self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
             if grad_W_time is not None:
                 self.W_time -= self.scheduler_W_time.update_change(grad_W_time)

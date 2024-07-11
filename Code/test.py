@@ -10,7 +10,8 @@ from Node import Node
 print("##### FEED FORWARD #####")
 
 act_func = sigmoid
-scheduler = Constant(eta=0.1)
+# scheduler = Constant(eta=0.1)
+scheduler = Adam(eta=0.1, rho=0.9, rho2=0.999)
 
 rnn = RNN()
 rnn.add_InputLayer(3)

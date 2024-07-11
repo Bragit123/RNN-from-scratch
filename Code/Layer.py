@@ -30,16 +30,7 @@ class Layer:
     def reset_weights(self):
         raise NotImplementedError
     
-    def update_weights(self):
-        raise NotImplementedError
-    
-    def update_weights_all_nodes(
-            self,
-            new_W_layer: np.ndarray,
-            new_b_layer: np.ndarray,
-            new_W_time: np.ndarray,
-            new_b_time: np.ndarray
-    ):
+    def update_weights_all_nodes(self):
         raise NotImplementedError
     
     def add_node(self):

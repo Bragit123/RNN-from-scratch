@@ -25,19 +25,7 @@ class InputLayer(Layer):
         """
         pass
     
-    def update_weights(self):
-        """
-        This method should not be called in the input layer.
-        """
-        print("WARNING: update_weights() was called in InputLayer. This should not be necessary.")
-    
-    def update_weights_all_nodes(
-            self,
-            new_W_layer: np.ndarray,
-            new_b_layer: np.ndarray,
-            new_W_time: np.ndarray,
-            new_b_time: np.ndarray
-    ):
+    def update_weights_all_nodes(self):
         """
         This method should not be called in the input layer.
         """
