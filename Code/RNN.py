@@ -69,6 +69,44 @@ class RNN:
             output[:,i,:] = node.h_output
         
         return output
+
+    def extrapolate(
+            self,
+            X: np.ndarray,
+            length: int
+    ):
+        """
+        Extrapolate data.
+        X = input with shape (n_batches, seq_length, n_features)
+        length = number of time steps to extrapolate
+        """
+        ## First, feed forward like normal
+        output_regular = self.feed_forward(X)
+
+        ## Find shape of new output from shape of regular output
+        output_regular_shape = output_regular.shape
+        n_batches = output_regular_shape[0]
+        sequence_length = output_regular_shape[1] + length
+        n_features = output_regular_shape[2]
+        output_shape = (n_batches, sequence_length, n_features)
+
+        ## Compute extrapolation one time step at a time (instead of one layer at a time, since we need the output at previous time step)
+        output_prev = output_regular[:,-1,:] # Previous output
+        for n in range(length):
+            nodes = []
+            for l in range(1, self.n_layers):
+                layer = self.layers[l]
+                n_features = layer.n_features
+                act_func = layer.act_func
+                W_layer = layer.W_layer
+                b_layer = layer.b_layer
+                W_time = layer.W_time
+                b_time = layer.b_time
+                new_node = Node(n_features, act_func, W_layer, b_layer, W_time, b_time)
+                nodes.append(new_node)
+
+
+
     
     def backpropagate(
             self,
