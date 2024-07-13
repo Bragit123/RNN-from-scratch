@@ -48,9 +48,9 @@ class RNNLayer(Layer):
         """
         np.random.seed(self.seed)
         self.W_layer = np.random.normal(size=self.W_layer_size)
-        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
+        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.1
         self.W_time = np.random.normal(size=self.W_time_size)
-        self.b_time = np.random.normal(size=self.b_time_size) * 0.01
+        self.b_time = np.random.normal(size=self.b_time_size) * 0.1
     
     def reset_schedulers(self):
         """

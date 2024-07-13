@@ -46,7 +46,7 @@ class OutputLayer(Layer):
         """
         np.random.seed(self.seed)
         self.W_layer = np.random.normal(size=self.W_layer_size)
-        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
+        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.1
         self.W_time = None
         self.b_time = None
     
@@ -121,7 +121,6 @@ class OutputLayer(Layer):
         NOTE: Unlike the other layers, this layer takes a numpy array as input instead of a Layer.
         """
         dC_shape = dC.shape
-        sequence_length = dC_shape[1]
         
         ## Go through all nodes
         for i in range(self.n_nodes):            

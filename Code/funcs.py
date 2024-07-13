@@ -60,6 +60,9 @@ def LRELU(X):
     delta = 10e-4
     return jnp.where(X > jnp.zeros(X.shape), X, delta * X)
 
+def tanh(X):
+    return jnp.tanh(X)
+
 
 def derivate(func):
     if func.__name__ == "RELU":

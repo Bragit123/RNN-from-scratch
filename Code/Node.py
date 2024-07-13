@@ -121,7 +121,7 @@ class Node:
 
         ## Gradients w.r.t. weights
         # Need to transpose h and not delta in order for matrices to match up correctly, since we have batches along rows, and features along columns
-        self.grad_W_layer = self.h_layer.T @ delta / n_batches
+        self.grad_W_layer = self.h_layer.T @ delta# / n_batches
         self.grad_W_layer = self.grad_W_layer + self.W_layer * lmbd # Regularization factor
         
         if self.h_time is None:

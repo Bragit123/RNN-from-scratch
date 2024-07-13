@@ -93,20 +93,23 @@ class RNN:
             t_val: np.ndarray = None,
             epochs: int = 100,
             batches: int = 1,
-            lmbd: float = 0.01
+            lmbd: float = 0.01,
+            store_output: np.ndarray = False
     ):
         """
-        X = input
-        t = target
+        X = input (n_batches, sequence_length, n_features)
+        t = target (n_batches, sequence_length, n_features)
         _train = training data
         _val = validation data
         epochs = number of epochs to train for
         batches = number of batches to split data into
+        store_output = Whether to store output from each epoch. If true, will be saved in scores
+            y_history shape = (n_epochs, n_batches, sequence_length, n_features)
         """
         self.reset_weights() # Reset weights for new training
         batch_size = X_train.shape[0] // batches
 
-        # Initialize arrays for training scores
+        # Initialize arrays for scores
         train_cost = self.cost_func(t_train)
         train_error = np.zeros(epochs)
         train_accuracy = np.zeros(epochs)
@@ -116,11 +119,18 @@ class RNN:
             val_error = np.zeros(epochs)
             val_accuracy = np.zeros(epochs)
         
+        if store_output:
+            y_train_shape = (epochs,) + X_train.shape
+            y_train_history = np.zeros(shape=y_train_shape)
+            if X_val is not None:
+                y_val_shape = (epochs,) + X_val.shape
+                y_val_history = np.zeros(shape=y_val_shape)
+        
         # Resample X and t
         X_train, t_train = resample(X_train, t_train, replace=False)
 
         for e in range(epochs):
-            print("EPOCH: " + str(e+1) + "/" + str(epochs))
+            print("EPOCH: " + str(e+1) + "/" + str(epochs), end="\r")
             for b in range(batches):
                 ## Extract a smaller batch from the training data
                 if b == batches - 1:
@@ -144,11 +154,22 @@ class RNN:
             if X_val is not None:
                 y_val = self.feed_forward(X_val)
                 val_error[e] = val_cost(y_val)
+            
+            if store_output:
+                y_train_history[e,:,:,:] = y_train
+                if X_val is not None:
+                    y_val_history[e,:,:,:] = y_val
         
         ## Create a dictionary for the scores, and return it
         scores = {"train_error": train_error}
         if X_val is not None:
+            scores["y_val"] = y_val
             scores["val_error"] = val_error
+        
+        if store_output:
+            scores["y_train_history"] = y_train_history
+            if X_val is not None:
+                scores["y_val_history"] = y_val_history
         
         return scores
 
