@@ -34,6 +34,10 @@ class RNN:
     def reset_weights(self):
         for layer in self.layers:
             layer.reset_weights()
+    
+    def reset_schedulers(self):
+        for layer in self.layers:
+            layer.reset_schedulers()
 
     def feed_forward(
             self,
@@ -117,8 +121,36 @@ class RNN:
 
         for e in range(epochs):
             print("EPOCH: " + str(e+1) + "/" + str(epochs))
+            for b in range(batches):
+                ## Extract a smaller batch from the training data
+                if b == batches - 1:
+                    # If this is the last batch, include all remaining elements
+                    X_batch = X_train[b*batch_size :]
+                    t_batch = t_train[b*batch_size :]
+                else:
+                    X_batch = X_train[b*batch_size : (b+1)*batch_size]
+                    t_batch = t_train[b*batch_size : (b+1)*batch_size]
+                
+                ## Train the network on this batch with gradient descent
+                y_batch = self.feed_forward(X_batch)
+                self.backpropagate(y_batch, t_batch, lmbd)
+            
+            self.reset_schedulers()
 
+            ## Compute scores for this epoch
+            y_train = self.feed_forward(X_train)
+            train_error[e] = train_cost(y_train)
 
+            if X_val is not None:
+                y_val = self.feed_forward(X_val)
+                val_error[e] = val_cost(y_val)
+        
+        ## Create a dictionary for the scores, and return it
+        scores = {"train_error": train_error}
+        if X_val is not None:
+            scores["val_error"] = val_error
+        
+        return scores
 
     def add_InputLayer(
             self,

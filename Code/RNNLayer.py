@@ -51,6 +51,15 @@ class RNNLayer(Layer):
         self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
         self.W_time = np.random.normal(size=self.W_time_size)
         self.b_time = np.random.normal(size=self.b_time_size) * 0.01
+    
+    def reset_schedulers(self):
+        """
+        Reset the schedulers of the layer.
+        """
+        self.scheduler_W_layer.reset()
+        self.scheduler_b_layer.reset()
+        self.scheduler_W_time.reset()
+        self.scheduler_b_time.reset()
 
     def update_weights_all_nodes(self):
         """

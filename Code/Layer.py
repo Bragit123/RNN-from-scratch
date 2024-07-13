@@ -30,6 +30,9 @@ class Layer:
     def reset_weights(self):
         raise NotImplementedError
     
+    def reset_schedulers(self):
+        raise NotImplementedError
+    
     def update_weights_all_nodes(self):
         raise NotImplementedError
     

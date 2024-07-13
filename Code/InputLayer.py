@@ -24,6 +24,12 @@ class InputLayer(Layer):
         Input layer has no weights, so this method does nothing
         """
         pass
+
+    def reset_schedulers(self):
+        """
+        Input layer has no weights, so this method does nothing
+        """
+        pass
     
     def update_weights_all_nodes(self):
         """

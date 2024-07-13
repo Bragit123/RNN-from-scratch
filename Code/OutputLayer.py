@@ -49,6 +49,13 @@ class OutputLayer(Layer):
         self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
         self.W_time = None
         self.b_time = None
+    
+    def reset_schedulers(self):
+        """
+        Reset the schedulers of the layer.
+        """
+        self.scheduler_W_layer.reset()
+        self.scheduler_b_layer.reset()
 
     def update_weights_all_nodes(self):
         """
