@@ -75,7 +75,7 @@ fig, ax = plt.subplots()
 t_plot = ax.plot(seq_ind, t_orig, "k", label="Target")[0]
 y_plot = ax.plot(seq_ind, y, "b--", label="Output")[0]
 epoch_text = ax.text(5, 70, f"Epoch: {0}")
-cost_text = ax.text(5, 68, f"Cost: {train_error[0]:.2f}")
+error_text = ax.text(5, 68, f"Error: {train_error[0]:.2f}")
 ax.set(xlim=[0,N], ylim=[np.min(t_orig)-1,np.max(t_orig)+1])
 ax.legend()
 
@@ -83,7 +83,7 @@ def update_plot(frame):
     y = y_history[frame,0,:,0]
     y_plot.set_ydata(y)
     epoch_text.set_text(f"Epoch: {frame}")
-    cost_text.set_text(f"Cost: {train_error[frame]:.2f}")
+    error_text.set_text(f"Error: {train_error[frame]:.2f}")
     return y_plot
 
 anim = animation.FuncAnimation(fig=fig, func=update_plot, frames=epochs, interval=100)
