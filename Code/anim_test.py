@@ -17,4 +17,4 @@ def update(frame):
     return line
 
 ani = anim.FuncAnimation(fig=fig, func=update, frames=n, interval=10)
-ani.save("mymovie.mp4", writer="pillow")
+ani.save("mymovie.gif", writer="pillow")
