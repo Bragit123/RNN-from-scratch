@@ -69,6 +69,29 @@ plt.plot(seq_ind, y, "b--", label="Output")
 plt.legend()
 plt.savefig("weather.pdf")
 
+## Test network on unseen data
+x_test_orig = weather_data["tmax"][2*N:3*N].to_numpy()
+t_test_orig = weather_data["tmax_tomorrow"][2*N:3*N].to_numpy()
+x_test = x_test_orig[:,np.newaxis]
+t_test = t_test_orig[:,np.newaxis]
+x_test = sc.transform(x_test)
+t_test = sc.transform(t_test)
+x_test = x_test[np.newaxis,:,:]
+t_test = t_test[np.newaxis,:,:]
+y_test = rnn.feed_forward(x_test)
+cost_test = cost_func(t_test)(y_test)
+seq_ind_test = np.arange(3*N-2*N)
+y_test = y_test[0,:,:]
+y_test = sc.inverse_transform(y_test)
+y_test = y_test[:,0]
+plt.figure()
+plt.plot(seq_ind_test, t_test_orig, "k", label="Target")
+plt.plot(seq_ind_test, y_test, "b--", label="Output")
+plt.text(0, 80, f"Error: {cost_test:.2f}")
+plt.legend()
+plt.savefig("weather_validation.pdf")
+
+
 ## Create animation of how the output fits to the target
 y = y_history[0,0,:,0]
 fig, ax = plt.subplots()
