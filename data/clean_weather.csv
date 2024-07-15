@@ -1,4 +1,4 @@
-,tmax,tmin,rain,tmax_tomorrow
+date,tmax,tmin,rain,tmax_tomorrow
 1970-01-01,60.0,35.0,0.0,52.0
 1970-01-02,52.0,39.0,0.0,52.0
 1970-01-03,52.0,35.0,0.0,53.0

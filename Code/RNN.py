@@ -30,6 +30,8 @@ class RNN:
         self.seed = seed
 
         self.n_features_output = None
+        self.output = None
+        self.output_extra = None
     
     def reset_weights(self):
         for layer in self.layers:
@@ -68,44 +70,67 @@ class RNN:
             node = output_layer.nodes[i]
             output[:,i,:] = node.h_output
         
-        return output
+        self.output = output
+        return self.output
 
     def extrapolate(
             self,
-            X: np.ndarray,
             length: int
     ):
         """
-        Extrapolate data.
-        X = input with shape (n_batches, seq_length, n_features)
+        Extrapolate data by continuing the sequence from the output of the last layer, with the output of the previous time step as input for the new time step
         length = number of time steps to extrapolate
         """
-        ## First, feed forward like normal
-        output_regular = self.feed_forward(X)
+        ## Initialize extrapolated output
+        output = self.output
+        n_batches = output.shape[0]
+        n_features = self.n_features_output
+        output_extra_shape = (n_batches, length, n_features)
+        output_extra = np.zeros(output_extra_shape)
 
-        ## Find shape of new output from shape of regular output
-        output_regular_shape = output_regular.shape
-        n_batches = output_regular_shape[0]
-        sequence_length = output_regular_shape[1] + length
-        n_features = output_regular_shape[2]
-        output_shape = (n_batches, sequence_length, n_features)
+        ## Extrapolate
+        y_prev = output[:,0,:] # Output from last layer at last time step
 
-        ## Compute extrapolation one time step at a time (instead of one layer at a time, since we need the output at previous time step)
-        output_prev = output_regular[:,-1,:] # Previous output
-        for n in range(length):
-            nodes = []
+        for i in range(length):
+            h_layer = y_prev # h_layer at first layer = input = previous output
             for l in range(1, self.n_layers):
                 layer = self.layers[l]
-                n_features = layer.n_features
-                act_func = layer.act_func
-                W_layer = layer.W_layer
-                b_layer = layer.b_layer
-                W_time = layer.W_time
-                b_time = layer.b_time
-                new_node = Node(n_features, act_func, W_layer, b_layer, W_time, b_time)
-                nodes.append(new_node)
+                node_prev = layer.nodes[-1] # Node at previous time step
+                h_time = node_prev.h_output
+                # print(h_layer, h_time)
+                layer.add_node()
+                node = layer.nodes[-1] # Current node
+                if l == self.n_layers-1:
+                    # If this is the output layer (last layer), set h_time to None
+                    h_time = None
+                node.feed_forward(h_layer, h_time)
+                h_layer = node.h_output # Update h_layer
+            y_prev = h_layer
+            output_extra[:,i,:] = y_prev
+        
+        self.output_extra = output_extra
+        return self.output_extra
 
 
+    def _single_step_feed_forward(
+            self,
+            X: np.ndarray
+    ):
+        """
+        Feed forward a single time step. Used in extrapolate() to feed forward time step by time step in stead of layer by layer.
+        X = input of shape (n_batches, n_features)
+        """
+        self.layers
+        for l in range(1, self.n_layers):
+            layer = self.layers[l]
+            n_features = layer.n_features
+            act_func = layer.act_func
+            W_layer = layer.W_layer
+            b_layer = layer.b_layer
+            W_time = layer.W_time
+            b_time = layer.b_time
+            new_node = Node(n_features, act_func, W_layer, b_layer, W_time, b_time)
+            h_layer = new_node.feed_forward()
 
     
     def backpropagate(
