@@ -111,27 +111,6 @@ class RNN:
         self.output_extra = output_extra
         return self.output_extra
 
-
-    def _single_step_feed_forward(
-            self,
-            X: np.ndarray
-    ):
-        """
-        Feed forward a single time step. Used in extrapolate() to feed forward time step by time step in stead of layer by layer.
-        X = input of shape (n_batches, n_features)
-        """
-        self.layers
-        for l in range(1, self.n_layers):
-            layer = self.layers[l]
-            n_features = layer.n_features
-            act_func = layer.act_func
-            W_layer = layer.W_layer
-            b_layer = layer.b_layer
-            W_time = layer.W_time
-            b_time = layer.b_time
-            new_node = Node(n_features, act_func, W_layer, b_layer, W_time, b_time)
-            h_layer = new_node.feed_forward()
-
     
     def backpropagate(
             self,
