@@ -165,7 +165,7 @@ ax.set_ylabel("Temperature")
 t_plot = ax.plot(seq_val, t_val_orig, "k", label="Target")[0]
 y_plot = ax.plot(seq_val, y_val, "b--", label="Output")[0]
 epoch_text = ax.text(5, 55, f"Epoch: {0}")
-error_text = ax.text(5, 53, f"Error: {train_error[0]:.2f}")
+error_text = ax.text(5, 53, f"Error: {val_error[0]:.2f}")
 ax.set(xlim=[0,N_val], ylim=[np.min(t_val_orig)-1,np.max(t_val_orig)+1])
 ax.legend()
 
@@ -173,7 +173,7 @@ def update_plot(frame):
     y_val = y_val_history[frame,0,:,0]
     y_plot.set_ydata(y_val)
     epoch_text.set_text(f"Epoch: {frame}")
-    error_text.set_text(f"Error: {train_error[frame]:.2f}")
+    error_text.set_text(f"Error: {val_error[frame]:.2f}")
     return y_plot
 
 anim = animation.FuncAnimation(fig=fig, func=update_plot, frames=epochs, interval=100)
