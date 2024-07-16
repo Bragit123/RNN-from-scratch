@@ -1,8 +1,8 @@
 from collections.abc import Callable
 from copy import copy
-from schedulers import Scheduler
-from Layer import Layer
-from Node import Node
+from .schedulers import Scheduler
+from .Layer import Layer
+from .Node import Node
 import numpy as np
  
 class OutputLayer(Layer):

@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from funcs import identity, CostOLS
 from sklearn.preprocessing import MinMaxScaler
-from RNN import RNN
-from schedulers import Adam
+from RNN_module.RNN import RNN
+from RNN_module.funcs import identity, CostOLS
+from RNN_module.schedulers import Adam
 
 cost_func = CostOLS
 act_func_hidden = identity
@@ -72,7 +72,7 @@ plt.plot(epoch_arr, train_error, label="Training error")
 plt.plot(epoch_arr, val_error, label="Validation error")
 plt.yscale("log")
 plt.legend()
-plt.savefig("weather_error.pdf")
+plt.savefig("Figures/weather_error.pdf")
 
 ## Plot output and target after training
 seq_ind = np.arange(N)
@@ -85,7 +85,7 @@ plt.plot(seq_ind, t_orig, "k", label="Target")
 plt.plot(seq_ind, y, "b--", label="Output")
 plt.text(5, 70, f"Error: {train_error[-1]:.2f}")
 plt.legend()
-plt.savefig("weather.pdf")
+plt.savefig("Figures/weather.pdf")
 
 ## Extrapolate data using network
 length = 50
@@ -107,7 +107,7 @@ plt.plot([seq_ind[-1],seq_extra[0]], [y[-1],y_extra[0]], "r--")
 plt.plot(seq_extra, y_extra, "r--", label="Extrapolation")
 plt.yscale("log")
 plt.legend()
-plt.savefig("weather_extra.pdf")
+plt.savefig("Figures/weather_extra.pdf")
 
 ## Plot validation results
 seq_val = np.arange(N_val)
@@ -122,7 +122,7 @@ plt.plot(seq_val, t_val_orig, "k", label="Target")
 plt.plot(seq_val, y_val, "b--", label="Output")
 plt.text(1005, 55, f"Error: {val_error[-1]:.2f}")
 plt.legend()
-plt.savefig("weather_validation.pdf")
+plt.savefig("Figures/weather_validation.pdf")
 
 
 ## Create animation of how the output fits to the target
@@ -146,7 +146,7 @@ def update_plot(frame):
     return y_plot
 
 anim = animation.FuncAnimation(fig=fig, func=update_plot, frames=epochs, interval=100)
-anim.save("weather_anim.gif", writer="pillow")
+anim.save("Figures/weather_anim.gif", writer="pillow")
 
 
 ## Create animation for validation results
@@ -177,4 +177,4 @@ def update_plot(frame):
     return y_plot
 
 anim = animation.FuncAnimation(fig=fig, func=update_plot, frames=epochs, interval=100)
-anim.save("weather_val_anim.gif", writer="pillow")
+anim.save("Figures/weather_val_anim.gif", writer="pillow")

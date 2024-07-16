@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from funcs import identity, derivate
+from .funcs import identity, derivate
 from jax import vmap
 import numpy as np
 

@@ -1,4 +1,3 @@
-
 import jax.numpy as jnp
 
 ## Copied directly from lecture notes. Have only changed from autograd to jax

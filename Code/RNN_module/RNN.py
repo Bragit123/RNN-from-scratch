@@ -1,13 +1,13 @@
 from collections.abc import Callable
 from jax import vmap
-from funcs import derivate
 from sklearn.utils import resample
-from schedulers import Scheduler
-from Layer import Layer
-from InputLayer import InputLayer
-from OutputLayer import OutputLayer
-from RNNLayer import RNNLayer
-from Node import Node
+from .funcs import derivate
+from .schedulers import Scheduler
+from .Layer import Layer
+from .InputLayer import InputLayer
+from .OutputLayer import OutputLayer
+from .RNNLayer import RNNLayer
+from .Node import Node
 import numpy as np
 
 class RNN:
