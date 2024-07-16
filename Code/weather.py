@@ -13,10 +13,10 @@ act_func_output = identity
 scheduler = Adam(eta=0.001, rho=0.9, rho2=0.999)
 
 ## Create RNN
-rnn = RNN(cost_func)
+rnn = RNN(cost_func, scheduler)
 rnn.add_InputLayer(1)
-rnn.add_RNNLayer(1, act_func_hidden, scheduler)
-rnn.add_OutputLayer(1, act_func_output, scheduler)
+rnn.add_RNNLayer(1, act_func_hidden)
+rnn.add_OutputLayer(1, act_func_output)
 rnn.reset_weights()
 
 ## Retrieve data

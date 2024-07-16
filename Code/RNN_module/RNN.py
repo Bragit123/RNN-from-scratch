@@ -1,6 +1,7 @@
 from collections.abc import Callable
 from jax import vmap
 from sklearn.utils import resample
+from copy import copy
 from .funcs import derivate
 from .schedulers import Scheduler
 from .Layer import Layer
@@ -17,6 +18,7 @@ class RNN:
                 [np.ndarray], # Takes in the target output (array)
                 Callable[[np.ndarray], np.ndarray] # Returns a function (the cost function)
             ],
+            scheduler: Scheduler,
             seed: int = 100
     ):
         """
@@ -27,6 +29,7 @@ class RNN:
         self.n_layers = 0
 
         self.cost_func = cost_func
+        self.scheduler = scheduler
         self.seed = seed
 
         self.n_features_output = None
@@ -228,8 +231,7 @@ class RNN:
     def add_RNNLayer(
             self,
             n_features: int,
-            act_func: Callable[[np.ndarray], np.ndarray],
-            scheduler: Scheduler
+            act_func: Callable[[np.ndarray], np.ndarray]
     ):
         """
         n_features = number of features in this layer
@@ -237,6 +239,7 @@ class RNN:
         act_func = activation function for this layer
         seed = numpy random seed
         """
+        scheduler = copy(self.scheduler)
         prev_layer = self.layers[-1]
         n_features_prev = prev_layer.n_features
         layer = RNNLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
@@ -245,8 +248,7 @@ class RNN:
     def add_OutputLayer(
             self,
             n_features: int,
-            act_func: Callable[[np.ndarray], np.ndarray],
-            scheduler: Scheduler
+            act_func: Callable[[np.ndarray], np.ndarray]
     ):
         """
         n_features = number of features in this layer
@@ -254,6 +256,7 @@ class RNN:
         act_func = activation function for this layer
         seed = numpy random seed
         """
+        scheduler = copy(self.scheduler)
         prev_layer = self.layers[-1]
         n_features_prev = prev_layer.n_features
         layer = OutputLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
