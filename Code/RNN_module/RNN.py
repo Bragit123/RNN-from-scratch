@@ -32,9 +32,11 @@ class RNN:
         self.cost_func = cost_func
         self.scheduler = scheduler
         self.seed = seed
+        self.single_output = None # Boolean. Will update this when adding OutputLayer or SingleOutputLayer
 
         self.n_features_output = None
         self.output = None
+        self.predicted = None
         self.output_extra = None
     
     def reset_weights(self):
@@ -52,7 +54,7 @@ class RNN:
         """
         X = input to RNN.
         X_shape = (batch_size, sequence_length, n_features)
-        NOTE: Unlike the other layers, this layer takes a numpy array as input instead of a Layer.
+        output_shape = X_shape if OutputLayer; (batch_size, n_features) if SingleOutputLayer
         """
         X_shape = X.shape
 
@@ -60,22 +62,67 @@ class RNN:
         n_batches = X_shape[0]
         sequence_length = X_shape[1]
         n_features_output = self.n_features_output
-        output_shape = (n_batches, sequence_length, n_features_output)
-        output = np.zeros(output_shape)
-
+        
+        if self.single_output:
+            output_shape = (n_batches, n_features_output)
+            output = np.zeros(output_shape)
+        else:
+            output_shape = (n_batches, sequence_length, n_features_output)
+            output = np.zeros(output_shape)
+            
+        ## Feed forward through all layers
         self.layers[0].feed_forward(X)
         for i in range(1, self.n_layers):
             layer = self.layers[i]
             prev_layer = self.layers[i-1]
             layer.feed_forward(prev_layer)
         
+        ## Get output from last layer
         output_layer = layer
-        for i in range(output_layer.n_nodes):
-            node = output_layer.nodes[i]
-            output[:,i,:] = node.h_output
+        if self.single_output:
+            output = output_layer.node.h_output
+        else:
+            for i in range(output_layer.n_nodes):
+                node = output_layer.nodes[i]
+                output[:,i,:] = node.h_output
         
+        ## Store and return output
         self.output = output
         return self.output
+    
+    def predict(
+            self,
+            X: np.ndarray
+    ):
+        """
+        X = input to RNN.
+        X_shape = (batch_size, sequence_length, n_features)
+        output_shape = X_shape if OutputLayer; (batch_size, n_features) if SingleOutputLayer
+        """
+        ## Initialize predicted array
+        output = self.feed_forward(X)
+        predicted = np.zeros_like(output)
+
+        ## Find maximum values at the feature axis, and set predicted to 1 at those indices
+        ind_batch = np.arange(predicted.shape[0])
+        if self.single_output:
+            ind_max = np.argmax(output, axis=1)
+
+            # Set predicted to 1 at the maximum values
+            predicted[ind_batch, ind_max] = 1
+        else:
+            ind_seq = np.arange(output.shape[1])
+            ind_max = np.argmax(output, axis=2)
+            ind_seq, ind_batch = np.meshgrid(ind_seq, ind_batch)
+            
+            # Set predicted to 1 at the maximum values
+            predicted[ind_batch, ind_seq, ind_max] = 1
+        
+        self.predicted = predicted
+        return self.predicted
+
+
+
 
     def extrapolate(
             self,
@@ -122,10 +169,17 @@ class RNN:
             target: np.ndarray,
             lmbd: float = 0.01
     ):
+        """
+        output_shape = (n_batches, sequence_length, n_features) if OutputLayer;
+            (n_batches, n_features) if SingleOutputLayer
+        target_shape = same as output_shape
+        """
+        ## Find gradient of cost function
         grad_cost = derivate(self.cost_func(target))
         dC = grad_cost(output)
-        self.layers[-1].backpropagate(dC, lmbd)
 
+        ## Backpropagate through all layers
+        self.layers[-1].backpropagate(dC, lmbd)
         for i in range(self.n_layers-2, 0, -1):
             layer = self.layers[i]
             next_layer = self.layers[i+1]
@@ -165,11 +219,28 @@ class RNN:
             val_error = np.zeros(epochs)
             val_accuracy = np.zeros(epochs)
         
+        ## Initialize arrays for output history if this should be stored
         if store_output:
-            y_train_shape = (epochs,) + X_train.shape
+            n_batches_train = X_train.shape[0]
+            seq_length_train = X_train.shape[1]
+            n_features_output = self.n_features_output
+
+            if self.single_output:
+                y_train_shape = (epochs, n_batches_train, n_features_output)
+            else:
+                y_train_shape = (epochs, n_batches_train, seq_length_train, n_features_output)
+            
             y_train_history = np.zeros(shape=y_train_shape)
+            
             if X_val is not None:
-                y_val_shape = (epochs,) + X_val.shape
+                n_batches_val = X_val.shape[0]
+                seq_length_val = X_val.shape[1]
+
+                if self.single_output:
+                    y_val_shape = (epochs, n_batches_val, n_features_output)
+                else:
+                    y_val_shape = (epochs, n_batches_val, seq_length_val, n_features_output)
+                
                 y_val_history = np.zeros(shape=y_val_shape)
         
         # Resample X and t
@@ -195,16 +266,34 @@ class RNN:
 
             ## Compute scores for this epoch
             y_train = self.feed_forward(X_train)
+            pred_train = self.predict(X_train)
+            
             train_error[e] = train_cost(y_train)
+
+            if self.single_output:
+                train_acc_arr = np.all(pred_train == t_train, axis=1)
+            else:
+                train_acc_arr = np.all(pred_train == t_train, axis=2)
+            
+            train_accuracy[e] = np.mean(train_acc_arr)
 
             if X_val is not None:
                 y_val = self.feed_forward(X_val)
+                pred_val = self.predict(X_val)
+                
                 val_error[e] = val_cost(y_val)
+
+                if self.single_output:
+                    val_acc_arr = np.all(pred_val == t_val, axis=1)
+                else:
+                    val_acc_arr = np.all(pred_val == t_val, axis=2)
+            
+                val_accuracy[e] = np.mean(val_acc_arr)
             
             if store_output:
-                y_train_history[e,:,:,:] = y_train
+                y_train_history[e] = y_train
                 if X_val is not None:
-                    y_val_history[e,:,:,:] = y_val
+                    y_val_history[e] = y_val
         
         ## Create a dictionary for the scores, and return it
         scores = {"train_error": train_error}
@@ -263,6 +352,7 @@ class RNN:
         layer = OutputLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
         self._add_layer(layer)
         
+        self.single_output = False
         self.n_features_output = n_features
     
     def add_SingleOutputLayer(
@@ -282,6 +372,7 @@ class RNN:
         layer = SingleOutputLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
         self._add_layer(layer)
 
+        self.single_output = True
         self.n_features_output = n_features
     
     def _add_layer(
