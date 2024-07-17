@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from .funcs import identity, derivate
+from .funcs import identity, derivate, grad_softmax
 from jax import vmap
 import numpy as np
 
@@ -115,7 +115,11 @@ class Node:
             dC = dC_layer + dC_time
         
         ## delta (gradient of cost w.r.t. z)
-        grad_act = vmap(vmap(derivate(self.act_func)))(self.z_output) # vmap is necessary for jax to vectorize gradient properly
+        if self.act_func.__name__ == "softmax":
+            grad_act = grad_softmax(self.z_output)
+        else:
+            grad_act = vmap(vmap(derivate(self.act_func)))(self.z_output) # vmap is necessary for jax to vectorize gradient properly
+        
         delta = grad_act * dC # Hadamard product, i.e., elementwise multiplication
 
         ## Gradients w.r.t. bias

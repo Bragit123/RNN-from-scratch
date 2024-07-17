@@ -105,10 +105,10 @@ class SingleOutputLayer(Layer):
         
         # Create and compute new node at this time step
         self.add_node()
-        node = self.nodes[0]
+        self.node = self.nodes[0]
 
         # No info transfer between time steps in output layer
-        output = node.feed_forward(h_layer, None)
+        output = self.node.feed_forward(h_layer, None)
             
     
     def backpropagate(

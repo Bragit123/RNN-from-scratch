@@ -49,7 +49,7 @@ plt.figure()
 plt.plot(epoch_arr, train_error, label="Training error")
 plt.yscale("log")
 plt.legend()
-plt.savefig("Figures/ode_error.pdf")
+plt.savefig("Figures/ODE/ode_error.pdf")
 
 ## Plot result compared to target
 x = X[0,:,0]
@@ -58,4 +58,4 @@ plt.figure()
 plt.plot(x, t_orig, "k", label="Target")
 plt.plot(x, y, "b--", label="Output")
 plt.legend()
-plt.savefig("Figures/ode.pdf")
+plt.savefig("Figures/ODE/ode.pdf")

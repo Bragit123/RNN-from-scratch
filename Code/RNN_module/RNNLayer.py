@@ -135,7 +135,7 @@ class RNNLayer(Layer):
             if next_is_single:
                 ## If next layer is SingleOutputLayer, only get gradient of its node at the last node in this layer
                 if i == self.n_nodes-1:
-                    dC_layer = next_layer.grad_h_layer
+                    dC_layer = next_layer.node.grad_h_layer
                 else:
                     dC_layer = None
             else:

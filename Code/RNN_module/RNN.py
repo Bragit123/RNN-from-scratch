@@ -267,7 +267,7 @@ class RNN:
             ## Compute scores for this epoch
             y_train = self.feed_forward(X_train)
             pred_train = self.predict(X_train)
-            
+
             train_error[e] = train_cost(y_train)
 
             if self.single_output:
@@ -296,10 +296,11 @@ class RNN:
                     y_val_history[e] = y_val
         
         ## Create a dictionary for the scores, and return it
-        scores = {"train_error": train_error}
+        scores = {"train_error": train_error, "train_accuracy": train_accuracy}
         if X_val is not None:
             scores["y_val"] = y_val
             scores["val_error"] = val_error
+            scores["val_accuracy"] = val_accuracy
         
         if store_output:
             scores["y_train_history"] = y_train_history
