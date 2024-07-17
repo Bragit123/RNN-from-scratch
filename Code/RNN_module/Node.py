@@ -94,7 +94,7 @@ class Node:
 
     def backpropagate(
             self,
-            dC_layer: np.ndarray,
+            dC_layer: np.ndarray = None,
             dC_time: np.ndarray = None,
             lmbd: float = 0.01
     ):
@@ -108,6 +108,9 @@ class Node:
         if dC_time is None:
             # If this is the last node in the layer, the gradient is just the gradient from the next layer
             dC = dC_layer
+        elif dC_layer is None:
+            # If the next layer has no node at this time step (because it is a SingleOutputLayer), use only dC_time
+            dC = dC_time
         else:
             dC = dC_layer + dC_time
         

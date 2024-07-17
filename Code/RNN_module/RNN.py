@@ -7,6 +7,7 @@ from .schedulers import Scheduler
 from .Layer import Layer
 from .InputLayer import InputLayer
 from .OutputLayer import OutputLayer
+from .SingleOutputLayer import SingleOutputLayer
 from .RNNLayer import RNNLayer
 from .Node import Node
 import numpy as np
@@ -262,6 +263,25 @@ class RNN:
         layer = OutputLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
         self._add_layer(layer)
         
+        self.n_features_output = n_features
+    
+    def add_SingleOutputLayer(
+            self,
+            n_features: int,
+            act_func: Callable[[np.ndarray], np.ndarray]
+    ):
+        """
+        n_features = number of features in this layer
+        n_features_prev = number of features in the previous layer
+        act_func = activation function for this layer
+        seed = numpy random seed
+        """
+        scheduler = copy(self.scheduler)
+        prev_layer = self.layers[-1]
+        n_features_prev = prev_layer.n_features
+        layer = SingleOutputLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
+        self._add_layer(layer)
+
         self.n_features_output = n_features
     
     def _add_layer(

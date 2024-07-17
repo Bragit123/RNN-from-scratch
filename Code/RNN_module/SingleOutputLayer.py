@@ -2,11 +2,10 @@ from collections.abc import Callable
 from copy import copy
 from .schedulers import Scheduler
 from .Layer import Layer
-from .SingleOutputLayer import SingleOutputLayer
 from .Node import Node
 import numpy as np
  
-class RNNLayer(Layer):
+class SingleOutputLayer(Layer):
     def __init__(
             self,
             n_features: int,
@@ -30,15 +29,15 @@ class RNNLayer(Layer):
         """
         super().__init__(n_features, n_features_prev, act_func, seed)
 
+        self.node = None
+
         self.W_layer = None
         self.b_layer = None
         self.W_time = None
         self.b_time = None
 
         self.scheduler_W_layer = copy(scheduler)
-        self.scheduler_W_time = copy(scheduler)
         self.scheduler_b_layer = copy(scheduler)
-        self.scheduler_b_time = copy(scheduler)
         
         self.reset_weights()
     
@@ -50,8 +49,8 @@ class RNNLayer(Layer):
         np.random.seed(self.seed)
         self.W_layer = np.random.normal(size=self.W_layer_size)
         self.b_layer = np.random.normal(size=self.b_layer_size) * 0.1
-        self.W_time = np.random.normal(size=self.W_time_size)
-        self.b_time = np.random.normal(size=self.b_time_size) * 0.1
+        self.W_time = None
+        self.b_time = None
     
     def reset_schedulers(self):
         """
@@ -59,19 +58,17 @@ class RNNLayer(Layer):
         """
         self.scheduler_W_layer.reset()
         self.scheduler_b_layer.reset()
-        self.scheduler_W_time.reset()
-        self.scheduler_b_time.reset()
 
     def update_weights_all_nodes(self):
         """
         Update the weights and biases in all nodes of the layer.
         """
         new_W_layer = self.W_layer
-        new_W_time = self.W_time
+        new_W_time = None
         new_b_layer = self.b_layer
-        new_b_time = self.b_time
-        for node in self.nodes:
-            node.set_Wb(new_W_layer, new_b_layer, new_W_time, new_b_time)
+        new_b_time = None
+        node = self.node
+        node.set_Wb(new_W_layer, new_b_layer, new_W_time, new_b_time)
     
     def add_node(self):
         """
@@ -102,70 +99,36 @@ class RNNLayer(Layer):
         self.remove_nodes()
         n_nodes_prev = prev_layer.n_nodes
 
-        for i in range(n_nodes_prev):
-            # Get output of node from previous layer
-            prev_layer_node = prev_layer.nodes[i]
-            h_layer = prev_layer_node.get_output()
-            
-            # Get output of node from previous time step
-            if i == 0:
-                # No previous node if this is the first time step
-                h_time = None
-            else:
-                prev_time_node = self.nodes[i-1]
-                h_time = prev_time_node.get_output()
-            
-            # Create and compute new node at this time step
-            self.add_node()
-            new_node = self.nodes[i]
-            output = new_node.feed_forward(h_layer, h_time)
+        # Get output of last node from previous layer
+        prev_layer_node_last = prev_layer.nodes[n_nodes_prev-1] # Get last node of previous layer
+        h_layer = prev_layer_node_last.get_output()
+        
+        # Create and compute new node at this time step
+        self.add_node()
+        node = self.nodes[0]
+
+        # No info transfer between time steps in output layer
+        output = node.feed_forward(h_layer, None)
             
     
     def backpropagate(
             self,
-            next_layer: Layer,
+            dC: np.ndarray,
             lmbd: float = 0.01
     ):
-        ## Check if the next layer is a SingleOutputLayer
-        next_is_single = isinstance(next_layer, SingleOutputLayer)
+        """
+        dC = Gradient of the cost function for the specific target
+        dC_shape = (batch_size, n_features)
+        NOTE: This layer has only one output node, so no sequence dimension in dC_shape
+        """
+        node = self.node
+        dC_layer = dC
+        node.backpropagate(dC_layer, None, lmbd)
 
-        ## Go through all nodes, starting with the last
-        for i in range(self.n_nodes-1, -1, -1):
-            ## Gradient from node at next layer
-            if next_is_single:
-                ## If next layer is SingleOutputLayer, only get gradient of its node at the last node in this layer
-                if i == self.n_nodes-1:
-                    dC_layer = next_layer.grad_h_layer
-                else:
-                    dC_layer = None
-            else:
-                ## If next layer is not SingleOutputLayer, get gradient from all nodes
-                node_layer = next_layer.nodes[i]
-                dC_layer = node_layer.grad_h_layer
+        grad_W_layer = node.grad_W_layer
+        grad_b_layer = node.grad_b_layer
 
-            ## Gradient from node at next time step (unless this is the last node)
-            if i == self.n_nodes-1:
-                dC_time = None
-            else:
-                node_time = self.nodes[i+1]
-                dC_time = node_time.grad_h_time
-            
-            ## Backpropagate through this node. Results are stored in the nodes
-            node = self.nodes[i]
-            node.backpropagate(dC_layer, dC_time, lmbd)
+        self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
+        self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
 
-            ## Update weights and biases
-            grad_W_layer = node.grad_W_layer
-            grad_W_time = node.grad_W_time
-            grad_b_layer = node.grad_b_layer
-            grad_b_time = node.grad_b_time
-
-            self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
-            if grad_W_time is not None:
-                self.W_time -= self.scheduler_W_time.update_change(grad_W_time)
-            
-            self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
-            if grad_b_time is not None:
-                self.b_time -= self.scheduler_b_time.update_change(grad_b_time)
-        
         self.update_weights_all_nodes()
