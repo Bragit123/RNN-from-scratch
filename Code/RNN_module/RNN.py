@@ -7,7 +7,7 @@ from .schedulers import Scheduler
 from .Layer import Layer
 from .InputLayer import InputLayer
 from .OutputLayer import OutputLayer
-from .SingleOutputLayer import SingleOutputLayer
+from .DenseLayer import DenseLayer
 from .RNNLayer import RNNLayer
 from .Node import Node
 import numpy as np
@@ -32,7 +32,7 @@ class RNN:
         self.cost_func = cost_func
         self.scheduler = scheduler
         self.seed = seed
-        self.single_output = None # Boolean. Will update this when adding OutputLayer or SingleOutputLayer
+        self.single_output = None # Boolean. Will update this when adding OutputLayer or DenseLayer output
 
         self.n_features_output = None
         self.output = None
@@ -79,8 +79,8 @@ class RNN:
         
         ## Get output from last layer
         output_layer = layer
-        if self.single_output:
-            output = output_layer.node.h_output
+        if output_layer.is_dense:
+            output = output_layer.h_output
         else:
             for i in range(output_layer.n_nodes):
                 node = output_layer.nodes[i]
@@ -120,8 +120,6 @@ class RNN:
         
         self.predicted = predicted
         return self.predicted
-
-
 
 
     def extrapolate(
@@ -179,7 +177,7 @@ class RNN:
         dC = grad_cost(output)
 
         ## Backpropagate through all layers
-        self.layers[-1].backpropagate(dC, lmbd)
+        self.layers[-1].backpropagate(dC=dC, lmbd=lmbd)
         for i in range(self.n_layers-2, 0, -1):
             layer = self.layers[i]
             next_layer = self.layers[i+1]
@@ -269,12 +267,8 @@ class RNN:
             pred_train = self.predict(X_train)
 
             train_error[e] = train_cost(y_train)
-
-            if self.single_output:
-                train_acc_arr = np.all(pred_train == t_train, axis=1)
-            else:
-                train_acc_arr = np.all(pred_train == t_train, axis=2)
             
+            train_acc_arr = np.all(pred_train == t_train, axis=-1)
             train_accuracy[e] = np.mean(train_acc_arr)
 
             if X_val is not None:
@@ -282,12 +276,8 @@ class RNN:
                 pred_val = self.predict(X_val)
                 
                 val_error[e] = val_cost(y_val)
-
-                if self.single_output:
-                    val_acc_arr = np.all(pred_val == t_val, axis=1)
-                else:
-                    val_acc_arr = np.all(pred_val == t_val, axis=2)
             
+                val_acc_arr = np.all(pred_val == t_val, axis=-1)
                 val_accuracy[e] = np.mean(val_acc_arr)
             
             if store_output:
@@ -356,26 +346,22 @@ class RNN:
         self.single_output = False
         self.n_features_output = n_features
     
-    def add_SingleOutputLayer(
+    def add_DenseLayer(
             self,
             n_features: int,
-            act_func: Callable[[np.ndarray], np.ndarray]
+            act_func: Callable[[np.ndarray], np.ndarray],
+            is_last_layer: bool = False
     ):
-        """
-        n_features = number of features in this layer
-        n_features_prev = number of features in the previous layer
-        act_func = activation function for this layer
-        seed = numpy random seed
-        """
         scheduler = copy(self.scheduler)
         prev_layer = self.layers[-1]
         n_features_prev = prev_layer.n_features
-        layer = SingleOutputLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
+        layer = DenseLayer(n_features, n_features_prev, act_func, scheduler, self.seed)
         self._add_layer(layer)
 
-        self.single_output = True
-        self.n_features_output = n_features
-    
+        if is_last_layer:
+            self.single_output = True
+            self.n_features_output = n_features
+
     def _add_layer(
             self,
             layer: Layer

@@ -8,7 +8,7 @@ from RNN_module.RNN import RNN
 
 
 # MNIST consists of 60 000 samples. data_frac decides the portion of these we will use
-data_frac = 0.01
+data_frac = 0.1
 
 ## Retrieve and normalize the data (split into train and test)
 digits = datasets.mnist.load_data(path="mnist.npz")
@@ -41,30 +41,28 @@ fig.savefig("Figures/MNIST/mnist_sample_grid.pdf")
 
 
 ## Set RNN parameters
-eta = 0.001
+eta = 0.01
 lmbd = 0.001
 seed = 100
 
-act_func_hidden = sigmoid
+act_func_hidden = tanh
 act_func_output = softmax
 cost_func = CostLogReg
 scheduler = Adam(eta, 0.9, 0.999)
 
 n_features_input = X_train.shape[2]
-n_features_hidden = 50
+n_features_hidden = 100
 n_features_output = t_train.shape[1]
 
 ## Create RNN
 rnn = RNN(cost_func, scheduler, seed)
 rnn.add_InputLayer(n_features_input)
 rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
-rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
-rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
-rnn.add_SingleOutputLayer(n_features_output, act_func_output)
+rnn.add_DenseLayer(n_features_output, act_func_output, is_last_layer=True)
 rnn.reset_weights()
 
 ## Train network
-epochs = 50
+epochs = 10
 batches = 10
 scores = rnn.train(X_train, t_train, X_val, t_val, epochs, batches, lmbd)
 

@@ -36,6 +36,8 @@ class OutputLayer(Layer):
 
         self.scheduler_W_layer = copy(scheduler)
         self.scheduler_b_layer = copy(scheduler)
+
+        self.is_dense = False
         
         self.reset_weights()
     
@@ -46,7 +48,7 @@ class OutputLayer(Layer):
         """
         np.random.seed(self.seed)
         self.W_layer = np.random.normal(size=self.W_layer_size)
-        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.1
+        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
         self.W_time = None
         self.b_time = None
     

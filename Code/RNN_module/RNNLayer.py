@@ -2,7 +2,6 @@ from collections.abc import Callable
 from copy import copy
 from .schedulers import Scheduler
 from .Layer import Layer
-from .SingleOutputLayer import SingleOutputLayer
 from .Node import Node
 import numpy as np
  
@@ -39,6 +38,8 @@ class RNNLayer(Layer):
         self.scheduler_W_time = copy(scheduler)
         self.scheduler_b_layer = copy(scheduler)
         self.scheduler_b_time = copy(scheduler)
+
+        self.is_dense = False
         
         self.reset_weights()
     
@@ -49,9 +50,9 @@ class RNNLayer(Layer):
         """
         np.random.seed(self.seed)
         self.W_layer = np.random.normal(size=self.W_layer_size)
-        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.1
+        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
         self.W_time = np.random.normal(size=self.W_time_size)
-        self.b_time = np.random.normal(size=self.b_time_size) * 0.1
+        self.b_time = np.random.normal(size=self.b_time_size) * 0.01
     
     def reset_schedulers(self):
         """
@@ -126,16 +127,16 @@ class RNNLayer(Layer):
             next_layer: Layer,
             lmbd: float = 0.01
     ):
-        ## Check if the next layer is a SingleOutputLayer
-        next_is_single = isinstance(next_layer, SingleOutputLayer)
+        ## Check if the next layer is a DenseLayer
+        next_is_dense = next_layer.is_dense
 
         ## Go through all nodes, starting with the last
         for i in range(self.n_nodes-1, -1, -1):
             ## Gradient from node at next layer
-            if next_is_single:
-                ## If next layer is SingleOutputLayer, only get gradient of its node at the last node in this layer
+            if next_is_dense:
+                ## If next layer is DenseLayer, consider only grad_h_layer in the last node in this layer
                 if i == self.n_nodes-1:
-                    dC_layer = next_layer.node.grad_h_layer
+                    dC_layer = next_layer.grad_h_prev
                 else:
                     dC_layer = None
             else:
