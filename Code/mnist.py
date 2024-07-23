@@ -58,11 +58,12 @@ n_features_output = t_train.shape[1]
 rnn = RNN(cost_func, scheduler, seed)
 rnn.add_InputLayer(n_features_input)
 rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
+rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
 rnn.add_DenseLayer(n_features_output, act_func_output, is_last_layer=True)
 rnn.reset_weights()
 
 ## Train network
-epochs = 10
+epochs = 20
 batches = 10
 scores = rnn.train(X_train, t_train, X_val, t_val, epochs, batches, lmbd)
 
