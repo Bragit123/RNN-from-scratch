@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-07-23T10:58:32.700Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="2adn5NAV9LI7Y0XfBkxh" version="24.7.3" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2024-07-23T11:02:33.401Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="YVCaKptSeIGHbAl7NtVk" version="24.7.3" type="github" pages="4">
   <diagram name="fcnn" id="sfRqCM7jmapI6OrAoU3U">
     <mxGraphModel dx="787" dy="527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -310,9 +310,6 @@
         <mxCell id="tAWQQP1TaSpEDtEkSpzn-97" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Hidden layers&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="234" y="380" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="tAWQQP1TaSpEDtEkSpzn-98" value="&lt;font style=&quot;font-size: 25px;&quot;&gt;Fully connected neural network&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="110" y="110" width="420" height="30" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
@@ -335,9 +332,6 @@
         </mxCell>
         <mxCell id="AwfwwttcpFcZzyvp_z-5-4" value="$$\hat{\vec{y}}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
           <mxGeometry x="240" y="240" width="40" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="AwfwwttcpFcZzyvp_z-5-63" value="&lt;font style=&quot;font-size: 25px;&quot;&gt;Recurrent neural network&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
-          <mxGeometry x="220" y="70" width="160" height="120" as="geometry" />
         </mxCell>
         <mxCell id="AwfwwttcpFcZzyvp_z-5-64" value="$$\vec{h}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
           <mxGeometry x="240" y="320" width="40" height="40" as="geometry" />
@@ -439,9 +433,6 @@
         </mxCell>
         <mxCell id="NqEcpBmAmqCIaiwnTPUT-20" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;dashed=1;dashPattern=12 12;" vertex="1" parent="1">
           <mxGeometry x="70" y="270" width="60" height="140" as="geometry" />
-        </mxCell>
-        <mxCell id="NqEcpBmAmqCIaiwnTPUT-5" value="&lt;font style=&quot;font-size: 25px;&quot;&gt;Recurrent neural network&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="70" y="130" width="660" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NqEcpBmAmqCIaiwnTPUT-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="NqEcpBmAmqCIaiwnTPUT-15">
           <mxGeometry relative="1" as="geometry">
