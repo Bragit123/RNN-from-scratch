@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-07-26T09:03:07.371Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="4zb3HaNymBWOEqmcXTCu" version="24.7.3" type="github" pages="8">
+<mxfile host="app.diagrams.net" modified="2024-07-26T09:03:43.810Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="hIFXgmlyfZbST7HESyvy" version="24.7.3" type="github" pages="8">
   <diagram name="fcnn" id="sfRqCM7jmapI6OrAoU3U">
     <mxGraphModel dx="787" dy="527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -2305,7 +2305,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="backprop" id="GffS3L_oN7SVfMwmNR4j">
-    <mxGraphModel dx="679" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="895" dy="599" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="_c6Qm3YmVAFt8G2GjLBO-0" />
         <mxCell id="_c6Qm3YmVAFt8G2GjLBO-1" parent="_c6Qm3YmVAFt8G2GjLBO-0" />
