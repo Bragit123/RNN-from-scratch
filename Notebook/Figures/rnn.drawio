@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-07-26T10:43:17.237Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="MT4p7EGKsm7e-DS0Xp9A" version="24.7.3" type="github" pages="10">
+<mxfile host="app.diagrams.net" modified="2024-07-26T11:54:13.930Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="d2lq_P15_IKojqGgcZcC" version="24.7.3" type="github" pages="11">
   <diagram name="fcnn" id="sfRqCM7jmapI6OrAoU3U">
     <mxGraphModel dx="787" dy="527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -2304,8 +2304,72 @@
       </root>
     </mxGraphModel>
   </diagram>
+  <diagram name="backprop_node" id="UtsV9XEo5uTxRrXkIDCm">
+    <mxGraphModel dx="937" dy="628" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+      <root>
+        <mxCell id="kqDCplVnhQL_XUHTzvhf-0" />
+        <mxCell id="kqDCplVnhQL_XUHTzvhf-1" parent="kqDCplVnhQL_XUHTzvhf-0" />
+        <mxCell id="kqDCplVnhQL_XUHTzvhf-2" value="$$\vec{h}_l^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="kqDCplVnhQL_XUHTzvhf-1">
+          <mxGeometry x="400" y="340" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="kqDCplVnhQL_XUHTzvhf-4" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endFill=1;dashed=1;dashPattern=1 1;" edge="1" parent="kqDCplVnhQL_XUHTzvhf-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="440" y="359.73" as="sourcePoint" />
+            <mxPoint x="500" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kqDCplVnhQL_XUHTzvhf-7" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endFill=1;dashed=1;dashPattern=1 1;" edge="1" parent="kqDCplVnhQL_XUHTzvhf-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="420" y="340" as="sourcePoint" />
+            <mxPoint x="420" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kqDCplVnhQL_XUHTzvhf-10" value="$$\left( \frac{\partial{C^{\text{tot}}}}{\partial \vec{h}_l^{(t)}} \right)_\text{time}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#B85450;" vertex="1" parent="kqDCplVnhQL_XUHTzvhf-1">
+          <mxGeometry x="470" y="290" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="B1YUS2SrOM_Zr7PUO_HF-0" value="" style="endArrow=blockThin;html=1;rounded=0;endFill=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;curved=1;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="kqDCplVnhQL_XUHTzvhf-1" source="B1YUS2SrOM_Zr7PUO_HF-1" target="kqDCplVnhQL_XUHTzvhf-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="290" as="sourcePoint" />
+            <mxPoint x="380" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="380" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="B1YUS2SrOM_Zr7PUO_HF-1" value="$$\vec{h}_{l+1}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;dashed=1;dashPattern=1 1;" vertex="1" parent="kqDCplVnhQL_XUHTzvhf-1">
+          <mxGeometry x="400" y="240" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Wxam-6WE0POs47hA2BwA-1" value="$$\vec{h}_{l}^{(t+1)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;dashed=1;dashPattern=1 1;" vertex="1" parent="kqDCplVnhQL_XUHTzvhf-1">
+          <mxGeometry x="500" y="340" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Wxam-6WE0POs47hA2BwA-5" value="" style="endArrow=blockThin;html=1;rounded=0;endFill=1;curved=1;fillColor=#f8cecc;strokeColor=#b85450;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="kqDCplVnhQL_XUHTzvhf-1" source="Wxam-6WE0POs47hA2BwA-1" target="kqDCplVnhQL_XUHTzvhf-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="340" as="sourcePoint" />
+            <mxPoint x="450" y="340" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="470" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_fy4oMljpjg-dMuEOSlA-0" value="$$\left( \frac{\partial{C^{\text{tot}}}}{\partial \vec{h}_l^{(t)}} \right)_\text{layer}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#B85450;" vertex="1" parent="kqDCplVnhQL_XUHTzvhf-1">
+          <mxGeometry x="320" y="260" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_fy4oMljpjg-dMuEOSlA-3" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endFill=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=1;ignoreEdge=0;deletable=1;bendable=1;snapToPoint=0;" edge="1" parent="kqDCplVnhQL_XUHTzvhf-1" source="kqDCplVnhQL_XUHTzvhf-2" target="kqDCplVnhQL_XUHTzvhf-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="364.14213562373493" y="360.00213562373506" as="sourcePoint" />
+            <mxPoint x="335.85786437626507" y="360.00213562373494" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="410" y="400" />
+              <mxPoint x="390" y="400" />
+              <mxPoint x="380" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
   <diagram name="backprop" id="GffS3L_oN7SVfMwmNR4j">
-    <mxGraphModel dx="729" dy="488" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="937" dy="628" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="_c6Qm3YmVAFt8G2GjLBO-0" />
         <mxCell id="_c6Qm3YmVAFt8G2GjLBO-1" parent="_c6Qm3YmVAFt8G2GjLBO-0" />
@@ -3017,51 +3081,6 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="qOnPNpW_Un_DQI-pv6WP-51" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fillColor=#d5e8d4;strokeColor=#82b366;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1" source="_c6Qm3YmVAFt8G2GjLBO-6" target="_c6Qm3YmVAFt8G2GjLBO-4">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="145" y="678" as="sourcePoint" />
-            <mxPoint x="145" y="760" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="140" y="730" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="qOnPNpW_Un_DQI-pv6WP-52" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fillColor=#d5e8d4;strokeColor=#82b366;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1" source="_c6Qm3YmVAFt8G2GjLBO-10" target="_c6Qm3YmVAFt8G2GjLBO-9">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="255" y="690" as="sourcePoint" />
-            <mxPoint x="255" y="772" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="250" y="730" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="qOnPNpW_Un_DQI-pv6WP-53" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fillColor=#d5e8d4;strokeColor=#82b366;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1" source="_c6Qm3YmVAFt8G2GjLBO-14" target="_c6Qm3YmVAFt8G2GjLBO-13">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="365" y="690" as="sourcePoint" />
-            <mxPoint x="365" y="772" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="360" y="730" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="qOnPNpW_Un_DQI-pv6WP-54" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fillColor=#d5e8d4;strokeColor=#82b366;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1" source="_c6Qm3YmVAFt8G2GjLBO-18" target="_c6Qm3YmVAFt8G2GjLBO-17">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="444" y="690" as="sourcePoint" />
-            <mxPoint x="444" y="772" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="470" y="730" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="qOnPNpW_Un_DQI-pv6WP-55" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fillColor=#d5e8d4;strokeColor=#82b366;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1" source="_c6Qm3YmVAFt8G2GjLBO-22" target="_c6Qm3YmVAFt8G2GjLBO-21">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="626" y="680" as="sourcePoint" />
-            <mxPoint x="626" y="762" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="650" y="730" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <mxCell id="qOnPNpW_Un_DQI-pv6WP-56" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;fillColor=#dae8fc;strokeColor=#6c8ebf;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1" source="_c6Qm3YmVAFt8G2GjLBO-65" target="_c6Qm3YmVAFt8G2GjLBO-64">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="260" y="350" as="sourcePoint" />
@@ -3107,7 +3126,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="I3fG1WsQPED5mDDM42BJ-6" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;fillColor=#dae8fc;strokeColor=#6c8ebf;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+        <mxCell id="I3fG1WsQPED5mDDM42BJ-6" value="" style="endArrow=blockThin;html=1;rounded=0;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;fillColor=#dae8fc;strokeColor=#6C8EBF;endFill=1;curved=1;" edge="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="275" y="546" as="sourcePoint" />
             <mxPoint x="193" y="546" as="targetPoint" />
@@ -3197,11 +3216,131 @@
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="hlnWItvyDB29BoL1M_DC-0" value="$$\frac{\partial C^{(1)}}{\partial \hat{\vec{y}}^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#B85450;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="110" y="200" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="YB9XUfhJl-O9sLNlzt-I-0" value="$$\frac{\partial C^{(2)}}{\partial \hat{\vec{y}}^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#B85450;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="220" y="200" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="YB9XUfhJl-O9sLNlzt-I-1" value="$$\frac{\partial C^{(3)}}{\partial \hat{\vec{y}}^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#B85450;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="330" y="200" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="YB9XUfhJl-O9sLNlzt-I-2" value="$$\frac{\partial C^{(4)}}{\partial \hat{\vec{y}}^{(4)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#B85450;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="440" y="200" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="YB9XUfhJl-O9sLNlzt-I-3" value="$$\frac{\partial C^{(t)}}{\partial \hat{\vec{y}}^{(t)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#B85450;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="620" y="200" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="bYmATMzsvzQRUPu3SCw_-0" value="$$\frac{\partial \hat{\vec{y}}^{(1)}}{\partial \vec{h}_L^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="120" y="270" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="kSyJjlTrcjYQdVeZUTK3-0" value="$$\frac{\partial \hat{\vec{y}}^{(2)}}{\partial \vec{h}_L^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="229" y="270" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="kSyJjlTrcjYQdVeZUTK3-1" value="$$\frac{\partial \hat{\vec{y}}^{(3)}}{\partial \vec{h}_L^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="340" y="270" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="kSyJjlTrcjYQdVeZUTK3-2" value="$$\frac{\partial \hat{\vec{y}}^{(4)}}{\partial \vec{h}_L^{(4)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="450" y="270" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="kSyJjlTrcjYQdVeZUTK3-3" value="$$\frac{\partial \hat{\vec{y}}^{(t)}}{\partial \vec{h}_L^{(t)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="630" y="270" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-0" value="$$\frac{\partial \vec{h}_L^{(1)}}{\partial \vec{h}_{L-1}^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="110" y="390" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-1" value="$$\frac{\partial \vec{h}_L^{(2)}}{\partial \vec{h}_{L-1}^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="221" y="390" width="38" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-2" value="$$\frac{\partial \vec{h}_L^{(3)}}{\partial \vec{h}_{L-1}^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="330" y="390" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-3" value="$$\frac{\partial \vec{h}_L^{(4)}}{\partial \vec{h}_{L-1}^{(4)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="440" y="390" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-4" value="$$\frac{\partial \vec{h}_L^{(t)}}{\partial \vec{h}_{L-1}^{(t)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="620" y="390" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-5" value="$$\frac{\partial \vec{h}_3^{(1)}}{\partial \vec{h}_2^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="120" y="460" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-6" value="$$\frac{\partial \vec{h}_3^{(2)}}{\partial \vec{h}_2^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="230" y="460" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-7" value="$$\frac{\partial \vec{h}_2^{(2)}}{\partial \vec{h}_2^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="180" y="480" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-8" value="$$\frac{\partial \vec{h}_L^{(2)}}{\partial \vec{h}_L^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="180" y="300" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-9" value="$$\frac{\partial \vec{h}_L^{(3)}}{\partial \vec{h}_L^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="291" y="300" width="49" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-10" value="$$\frac{\partial \vec{h}_L^{(3)}}{\partial \vec{h}_L^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="401" y="300" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-11" value="$$\frac{\partial \vec{h}_L^{(4)}}{\partial \vec{h}_L^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="510" y="300" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-12" value="$$\frac{\partial \vec{h}_L^{(t)}}{\partial \vec{h}_L^{(t-1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="580" y="300" width="49" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-13" value="$$\frac{\partial \vec{h}_3^{(3)}}{\partial \vec{h}_2^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="340" y="460" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-14" value="$$\frac{\partial \vec{h}_3^{(4)}}{\partial \vec{h}_2^{(4)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="450" y="460" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-15" value="$$\frac{\partial \vec{h}_3^{(t)}}{\partial \vec{h}_2^{(t)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="630" y="460" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-16" value="$$\frac{\partial \vec{h}_2^{(3)}}{\partial \vec{h}_2^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="290" y="480" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-17" value="$$\frac{\partial \vec{h}_2^{(4)}}{\partial \vec{h}_2^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="400" y="480" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-18" value="$$\frac{\partial \vec{h}_2^{(5)}}{\partial \vec{h}_2^{(4)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="510" y="480" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-19" value="$$\frac{\partial \vec{h}_2^{(t)}}{\partial \vec{h}_2^{(t-1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="580" y="480" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-20" value="$$\frac{\partial \vec{h}_2^{(1)}}{\partial \vec{h}_1^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="120" y="560" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-21" value="$$\frac{\partial \vec{h}_2^{(2)}}{\partial \vec{h}_1^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="230" y="560" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-22" value="$$\frac{\partial \vec{h}_2^{(3)}}{\partial \vec{h}_1^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="340" y="560" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-23" value="$$\frac{\partial \vec{h}_2^{(4)}}{\partial \vec{h}_1^{(4)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="450" y="560" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-24" value="$$\frac{\partial \vec{h}_2^{(t)}}{\partial \vec{h}_1^{(t)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#9673A6;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="630" y="560" width="39" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-25" value="$$\frac{\partial \vec{h}_1^{(2)}}{\partial \vec{h}_1^{(1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="179" y="590" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-26" value="$$\frac{\partial \vec{h}_1^{(3)}}{\partial \vec{h}_1^{(2)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="289" y="590" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-27" value="$$\frac{\partial \vec{h}_1^{(4)}}{\partial \vec{h}_1^{(3)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="399" y="590" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-28" value="$$\frac{\partial \vec{h}_1^{(5)}}{\partial \vec{h}_1^{(4)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="509" y="590" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hSDnIPDu9JWueKptavym-29" value="$$\frac{\partial \vec{h}_1^{(t)}}{\partial \vec{h}_1^{(t-1)}}$$" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#6C8EBF;" vertex="1" parent="_c6Qm3YmVAFt8G2GjLBO-1">
+          <mxGeometry x="579" y="590" width="50" height="50" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="WHpPAjI6b6GpNyRElD3x" name="backprop_output">
-    <mxGraphModel dx="703" dy="471" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="679" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
