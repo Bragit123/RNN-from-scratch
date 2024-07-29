@@ -156,17 +156,19 @@ class RNNLayer(Layer):
             node.backpropagate(dC_layer, dC_time, lmbd)
 
             ## Update weights and biases
-            grad_W_layer = node.grad_W_layer
+            grad_W_layer = node.grad_W_layer / self.n_nodes
             grad_W_time = node.grad_W_time
-            grad_b_layer = node.grad_b_layer
+            grad_b_layer = node.grad_b_layer / self.n_nodes
             grad_b_time = node.grad_b_time
 
             self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
             if grad_W_time is not None:
+                grad_W_time = grad_W_time / (self.n_nodes - 1)
                 self.W_time -= self.scheduler_W_time.update_change(grad_W_time)
             
             self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
             if grad_b_time is not None:
+                grad_b_time = grad_b_time / (self.n_nodes - 1)
                 self.b_time -= self.scheduler_b_time.update_change(grad_b_time)
         
         self.update_weights_all_nodes()
