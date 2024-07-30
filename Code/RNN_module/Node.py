@@ -52,12 +52,6 @@ class Node:
         self.b_layer = b_layer
         self.W_time = W_time
         self.b_time = b_time
-    
-    def get_output(self):
-        return self.h_output
-    
-    def set_output(self, output: np.ndarray):
-        self.h_output = output
 
     def feed_forward(
             self,

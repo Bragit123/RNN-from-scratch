@@ -74,7 +74,7 @@ class InputLayer(Layer):
         # Add a node to the layer for each time step, and set output
         for i in range(sequence_length):
             self.add_node()
-            self.nodes[i].set_output(X[:,i,:])
+            self.nodes[i].h_output = X[:,i,:]
     
     def backpropagate(
             self,

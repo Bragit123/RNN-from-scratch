@@ -102,7 +102,7 @@ class OutputLayer(Layer):
         for i in range(n_nodes_prev):
             # Get output of node from previous layer
             prev_layer_node = prev_layer.nodes[i]
-            h_layer = prev_layer_node.get_output()
+            h_layer = prev_layer_node.h_output
             
             # Create and compute new node at this time step
             self.add_node()

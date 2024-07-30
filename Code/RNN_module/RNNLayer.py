@@ -106,7 +106,7 @@ class RNNLayer(Layer):
         for i in range(n_nodes_prev):
             # Get output of node from previous layer
             prev_layer_node = prev_layer.nodes[i]
-            h_layer = prev_layer_node.get_output()
+            h_layer = prev_layer_node.h_output
             
             # Get output of node from previous time step
             if i == 0:
@@ -114,7 +114,7 @@ class RNNLayer(Layer):
                 h_time = None
             else:
                 prev_time_node = self.nodes[i-1]
-                h_time = prev_time_node.get_output()
+                h_time = prev_time_node.h_output
             
             # Create and compute new node at this time step
             self.add_node()
