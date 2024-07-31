@@ -6,34 +6,13 @@ import numpy as np
 class InputLayer(Layer):
     def __init__(
             self,
-            n_features: int
+            n_features: int,
+            seed: int = 100
     ):
         """
         n_features = number of features expected from the input.
         """
-
-        ##############################
-        # self.nodes = []
-        # self.n_features = n_features
-        # self.n_features_prev = n_features_prev
-        # self.act_func = act_func
-        # self.seed = seed
-        
-        # self.W_layer_size = (self.n_features_prev, self.n_features)
-        # self.b_layer_size = (1, self.n_features)
-        # self.W_time_size = (self.n_features, self.n_features)
-        # self.b_time_size = (1, self.n_features)
-
-        # self.n_nodes = 0
-        ##############################
-
-        self.nodes = []
-        self.n_nodes = 0
-        self.n_features = n_features
-        self.W_layer = None
-        self.b_layer = None
-        self.W_time = None
-        self.b_time = None
+        super().__init__(n_features, seed)
     
     def reset_weights(self):
         """

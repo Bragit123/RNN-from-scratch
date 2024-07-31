@@ -45,8 +45,8 @@ class Node:
             self,
             W_layer: np.ndarray,
             b_layer: np.ndarray,
-            W_time: np.ndarray,
-            b_time: np.ndarray
+            W_time: np.ndarray = None,
+            b_time: np.ndarray = None
     ):
         self.W_layer = W_layer
         self.b_layer = b_layer

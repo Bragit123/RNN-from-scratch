@@ -27,22 +27,15 @@ class RNNLayer(Layer):
         
         W_layer_size, b_layer_size, W_time_size, b_time_size = array shapes for the weights and biases
         """
-        super().__init__(n_features, n_features_prev, act_func, seed)
-        
-        ##############################
-        # self.nodes = []
-        # self.n_features = n_features
-        # self.n_features_prev = n_features_prev
-        # self.act_func = act_func
-        # self.seed = seed
-        
-        # self.W_layer_size = (self.n_features_prev, self.n_features)
-        # self.b_layer_size = (1, self.n_features)
-        # self.W_time_size = (self.n_features, self.n_features)
-        # self.b_time_size = (1, self.n_features)
+        super().__init__(n_features, seed)
 
-        # self.n_nodes = 0
-        ##############################
+        self.n_features_prev = n_features_prev
+        self.act_func = act_func
+        
+        self.W_layer_size = (self.n_features_prev, self.n_features)
+        self.b_layer_size = (1, self.n_features)
+        self.W_time_size = (self.n_features, self.n_features)
+        self.b_time_size = (1, self.n_features)
 
         self.W_layer = None
         self.b_layer = None

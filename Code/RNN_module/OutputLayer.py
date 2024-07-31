@@ -27,27 +27,17 @@ class OutputLayer(Layer):
         
         W_layer_size, b_layer_size, W_time_size, b_time_size = array shapes for the weights and biases
         """
-        super().__init__(n_features, n_features_prev, act_func, seed)
-
-        ##############################
-        # self.nodes = []
-        # self.n_features = n_features
-        # self.n_features_prev = n_features_prev
-        # self.act_func = act_func
-        # self.seed = seed
+        super().__init__(n_features, seed)
         
-        # self.W_layer_size = (self.n_features_prev, self.n_features)
-        # self.b_layer_size = (1, self.n_features)
-        # self.W_time_size = (self.n_features, self.n_features)
-        # self.b_time_size = (1, self.n_features)
+        self.n_features_prev = n_features_prev
+        self.act_func = act_func
+        
+        self.W_layer_size = (self.n_features_prev, self.n_features)
+        self.b_layer_size = (1, self.n_features)
 
-        # self.n_nodes = 0
-        ##############################
 
         self.W_layer = None
         self.b_layer = None
-        self.W_time = None
-        self.b_time = None
 
         self.scheduler_W_layer = copy(scheduler)
         self.scheduler_b_layer = copy(scheduler)
@@ -64,8 +54,6 @@ class OutputLayer(Layer):
         np.random.seed(self.seed)
         self.W_layer = np.random.normal(size=self.W_layer_size)
         self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
-        self.W_time = None
-        self.b_time = None
     
     def reset_schedulers(self):
         """
@@ -79,17 +67,15 @@ class OutputLayer(Layer):
         Update the weights and biases in all nodes of the layer.
         """
         new_W_layer = self.W_layer
-        new_W_time = None
         new_b_layer = self.b_layer
-        new_b_time = None
         for node in self.nodes:
-            node.set_Wb(new_W_layer, new_b_layer, new_W_time, new_b_time)
+            node.set_Wb(W_layer=new_W_layer, b_layer=new_b_layer)
     
     def add_node(self):
         """
         Add a node with the weights and biases specified by layer
         """
-        new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer, self.W_time, self.b_time)
+        new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer)
         self.nodes.append(new_node)
         self.n_nodes += 1
     

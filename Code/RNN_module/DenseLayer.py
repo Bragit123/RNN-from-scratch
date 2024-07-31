@@ -29,33 +29,19 @@ class DenseLayer(Layer):
         
         W_layer_size, b_layer_size, W_time_size, b_time_size = array shapes for the weights and biases
         """
-        super().__init__(n_features, n_features_prev, act_func, seed)
+        super().__init__(n_features, seed)
 
-        ##############################
-        # self.nodes = []
-        # self.n_features = n_features
-        # self.n_features_prev = n_features_prev
-        # self.act_func = act_func
-        # self.seed = seed
+        self.n_features_prev = n_features_prev
+        self.act_func = act_func
         
-        # self.W_layer_size = (self.n_features_prev, self.n_features)
-        # self.b_layer_size = (1, self.n_features)
-        # self.W_time_size = (self.n_features, self.n_features)
-        # self.b_time_size = (1, self.n_features)
-
-        # self.n_nodes = 0
-        ##############################
-        
-        self.W_layer_size = (n_features_prev, n_features)
-        self.b_layer_size = (1, n_features)
+        self.W_layer_size = (self.n_features_prev, self.n_features)
+        self.b_layer_size = (1, self.n_features)
 
         self.nodes = []
         self.n_nodes = 0
 
         self.W_layer = None
         self.b_layer = None
-        self.W_time = None
-        self.b_time = None
 
         self.grad_W_layer = None
         self.grad_b_layer = None
@@ -88,13 +74,13 @@ class DenseLayer(Layer):
         """
         Dense layer has no nodes. This method does nothing.
         """
-        self.nodes[0].set_Wb(self.W_layer, self.b_layer, None, None)
+        self.nodes[0].set_Wb(self.W_layer, self.b_layer)
     
     def add_node(self):
         """
         Dense layer has no nodes. This method does nothing.
         """
-        new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer, self.W_time, self.b_time)
+        new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer)
         self.nodes.append(new_node)
         self.n_nodes += 1
     
