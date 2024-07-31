@@ -83,13 +83,6 @@ class DenseLayer(Layer):
         new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer)
         self.nodes.append(new_node)
         self.n_nodes += 1
-    
-    def remove_nodes(self):
-        """
-        Dense layer has no nodes. This method does nothing.
-        """
-        self.nodes = []
-        self.n_nodes = 0
 
     def feed_forward(
             self,
@@ -103,6 +96,7 @@ class DenseLayer(Layer):
         prev_node = prev_layer.nodes[-1]
         h_layer = prev_node.h_output
 
+        self.remove_nodes()
         self.add_node()
         new_node = self.nodes[0]
         output = new_node.feed_forward(h_layer)

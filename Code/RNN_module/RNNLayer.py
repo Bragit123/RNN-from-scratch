@@ -89,16 +89,6 @@ class RNNLayer(Layer):
         new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer, self.W_time, self.b_time)
         self.nodes.append(new_node)
         self.n_nodes += 1
-    
-    def remove_nodes(self):
-        """
-        Remove all the nodes created for this layer.
-        NOTE: The weights and biases of the nodes are still stored in the layer, so we can easily
-            create new nodes. Removing the nodes is used to allow the sequence length to vary with
-            each call of feed_forward().
-        """
-        self.nodes = []
-        self.n_nodes = 0
 
     def feed_forward(
             self,

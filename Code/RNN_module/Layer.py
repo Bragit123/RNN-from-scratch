@@ -30,7 +30,17 @@ class Layer:
         raise NotImplementedError
     
     def remove_nodes(self):
-        raise NotImplementedError
+        """
+        Remove all the nodes created for this layer.
+
+        NOTE
+        ----
+        The weights and biases of the nodes are still stored in the layer, so we can easily
+            create new nodes. Removing the nodes is used to allow the sequence length to vary with
+            each call of feed_forward().
+        """
+        self.nodes = []
+        self.n_nodes = 0
 
     def feed_forward(
             self,

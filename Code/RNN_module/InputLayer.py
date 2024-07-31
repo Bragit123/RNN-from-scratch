@@ -41,13 +41,6 @@ class InputLayer(Layer):
         self.nodes.append(new_node)
         self.n_nodes += 1
 
-    def remove_nodes(self):
-        """
-        Remove all the nodes created for this layer.
-        """
-        self.nodes = []
-        self.n_nodes = 0
-
     def feed_forward(
             self,
             X: np.ndarray
