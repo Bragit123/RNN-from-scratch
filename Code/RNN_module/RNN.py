@@ -307,7 +307,7 @@ class RNN:
         """
         n_features = number of features expected from the input.
         """
-        layer = InputLayer(n_features)
+        layer = InputLayer(n_features, self.seed)
         self._add_layer(layer)
     
     def add_RNNLayer(
