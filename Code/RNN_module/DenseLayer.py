@@ -29,22 +29,22 @@ class DenseLayer(Layer):
         W_layer_size, b_layer_size, W_time_size, b_time_size = array shapes for the weights and biases
         """
         super().__init__(n_features, n_features_prev, act_func, seed)
-        self.weights_size = (n_features_prev, n_features)
-        self.bias_length = n_features
+        self.W_layer_size = (n_features_prev, n_features)
+        self.b_layer_size = (1, n_features)
 
-        self.weights = None
-        self.bias = None
+        self.W_layer = None
+        self.b_layer = None
 
         self.h_prev = None
         self.z_output = None
         self.h_output = None
 
-        self.grad_weights = None
-        self.grad_bias = None
+        self.grad_W_layer = None
+        self.grad_b_layer = None
         self.grad_h_prev = None
 
-        self.scheduler_weights = copy(scheduler)
-        self.scheduler_bias = copy(scheduler)
+        self.scheduler_W_layer = copy(scheduler)
+        self.scheduler_b_layer = copy(scheduler)
 
         self.is_dense = True
         
@@ -56,15 +56,15 @@ class DenseLayer(Layer):
         The 0.01 scale for biases was found to be best when we did the CNN project, so I just kept using this here.
         """
         np.random.seed(self.seed)
-        self.weights = np.random.normal(size=self.weights_size)
-        self.bias = np.random.normal(size=(1, self.bias_length)) * 0.01
+        self.W_layer = np.random.normal(size=self.W_layer_size)
+        self.b_layer = np.random.normal(size=self.b_layer_size) * 0.01
     
     def reset_schedulers(self):
         """
         Reset the schedulers of the layer.
         """
-        self.scheduler_weights.reset()
-        self.scheduler_bias.reset()
+        self.scheduler_W_layer.reset()
+        self.scheduler_b_layer.reset()
 
     def update_weights_all_nodes(self):
         """
@@ -100,7 +100,7 @@ class DenseLayer(Layer):
             last_node = prev_layer.nodes[-1]
             self.h_prev = last_node.h_output
         
-        self.z_output = self.h_prev @ self.weights + self.bias
+        self.z_output = self.h_prev @ self.W_layer + self.b_layer
         self.h_output = self.act_func(self.z_output)
 
         return self.h_output
@@ -133,11 +133,11 @@ class DenseLayer(Layer):
         delta = dC * grad_act # Hadamard product (elementwise)
         
         ## Compute gradients
-        grad_weights = self.h_prev.T @ delta / n_batches
-        grad_weights = grad_weights + self.weights * lmbd # Add regularization
-        grad_bias = np.sum(delta, axis=0).reshape(1, delta.shape[1]) / n_batches
-        self.grad_h_prev = delta @ self.weights.T
+        grad_W_layer = self.h_prev.T @ delta / n_batches
+        grad_W_layer = grad_W_layer + self.W_layer * lmbd # Add regularization
+        grad_b_layer = np.sum(delta, axis=0).reshape(1, delta.shape[1]) / n_batches
+        self.grad_h_prev = delta @ self.W_layer.T
 
         ## Update weights and bias
-        self.weights -= self.scheduler_weights.update_change(grad_weights)
-        self.bias -= self.scheduler_bias.update_change(grad_bias)
+        self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
+        self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
