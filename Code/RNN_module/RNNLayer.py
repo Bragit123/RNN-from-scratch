@@ -151,11 +151,12 @@ class RNNLayer(Layer):
             if next_is_dense:
                 ## If next layer is DenseLayer, consider only grad_h_layer in the last node in this layer
                 if i == self.n_nodes-1:
-                    dC_layer = next_layer.grad_h_prev
+                    node_layer = next_layer.nodes[0]
+                    dC_layer = node_layer.grad_h_layer
                 else:
                     dC_layer = None
             else:
-                ## If next layer is not SingleOutputLayer, get gradient from all nodes
+                ## If next layer is not DenseLayer, get gradient from all nodes
                 node_layer = next_layer.nodes[i]
                 dC_layer = node_layer.grad_h_layer
 

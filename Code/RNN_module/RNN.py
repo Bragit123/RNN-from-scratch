@@ -80,7 +80,8 @@ class RNN:
         ## Get output from last layer
         output_layer = layer
         if output_layer.is_dense:
-            output = output_layer.h_output
+            node = output_layer.nodes[0]
+            output = node.h_output
         else:
             for i in range(output_layer.n_nodes):
                 node = output_layer.nodes[i]
@@ -177,7 +178,7 @@ class RNN:
         dC = grad_cost(output)
 
         ## Backpropagate through all layers
-        self.layers[-1].backpropagate(dC=dC, lmbd=lmbd)
+        self.layers[-1].backpropagate(dC, lmbd=lmbd)
         for i in range(self.n_layers-2, 0, -1):
             layer = self.layers[i]
             next_layer = self.layers[i+1]

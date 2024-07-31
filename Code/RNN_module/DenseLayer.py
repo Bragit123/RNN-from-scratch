@@ -4,6 +4,7 @@ from jax import vmap
 from .funcs import grad_softmax, derivate
 from .schedulers import Scheduler
 from .Layer import Layer
+from .Node import Node
 import numpy as np
  
 class DenseLayer(Layer):
@@ -48,12 +49,13 @@ class DenseLayer(Layer):
         self.W_layer_size = (n_features_prev, n_features)
         self.b_layer_size = (1, n_features)
 
+        self.nodes = []
+        self.n_nodes = 0
+
         self.W_layer = None
         self.b_layer = None
-
-        self.h_prev = None
-        self.z_output = None
-        self.h_output = None
+        self.W_time = None
+        self.b_time = None
 
         self.grad_W_layer = None
         self.grad_b_layer = None
@@ -86,19 +88,22 @@ class DenseLayer(Layer):
         """
         Dense layer has no nodes. This method does nothing.
         """
-        return
+        self.nodes[0].set_Wb(self.W_layer, self.b_layer, None, None)
     
     def add_node(self):
         """
         Dense layer has no nodes. This method does nothing.
         """
-        return
+        new_node = Node(self.n_features, self.act_func, self.W_layer, self.b_layer, self.W_time, self.b_time)
+        self.nodes.append(new_node)
+        self.n_nodes += 1
     
     def remove_nodes(self):
         """
         Dense layer has no nodes. This method does nothing.
         """
-        return
+        self.nodes = []
+        self.n_nodes = 0
 
     def feed_forward(
             self,
@@ -108,24 +113,20 @@ class DenseLayer(Layer):
         Compute the output of this layer from the input (the output from the previous layer), and
         feed forward this to the next layer.
         """
-        ## Get output from previous layer (last node if RNNLayer)
-        # if isinstance(prev_layer, DenseLayer):
-        if prev_layer.is_dense:
-            self.h_prev = prev_layer.h_output
-        else:
-            last_node = prev_layer.nodes[-1]
-            self.h_prev = last_node.h_output
-        
-        self.z_output = self.h_prev @ self.W_layer + self.b_layer
-        self.h_output = self.act_func(self.z_output)
+        ## Get output from last node of previous layer
+        prev_node = prev_layer.nodes[-1]
+        h_layer = prev_node.h_output
 
-        return self.h_output
+        self.add_node()
+        new_node = self.nodes[0]
+        output = new_node.feed_forward(h_layer)
+
+        return output
             
     
     def backpropagate(
             self,
-            next_layer: Layer = None,
-            dC: np.ndarray = None,
+            next_layer_or_dC: Layer | np.ndarray,
             lmbd: float = 0.01
     ):
         """
@@ -134,26 +135,23 @@ class DenseLayer(Layer):
         dC_shape = (batch_size, n_features)
         NOTE: Should input either next_layer or dC, not both. Use dC if this is the last layer, and next_layer if not.
         """
-        ## Get dC from next layer if it is given.
-        if next_layer is not None:
-            dC = next_layer.grad_h_prev
-
-        ## Find gradient of activation function
-        if self.act_func.__name__ == "softmax":
-            grad_act = grad_softmax(self.z_output)
+        ## Get dC from next_layer_or_dC.
+        if isinstance(next_layer_or_dC, Layer):
+            # If next_layer_or_dC is a Layer, extract dC from last node.
+            dC = next_layer_or_dC.nodes[0].grad_h_layer
         else:
-            grad_act = vmap(vmap(derivate(self.act_func)))(self.z_output)
+            # If next_layer_or_dC is not a layer, it is the cost gradient.
+            dC = next_layer_or_dC
         
-        ## Compute delta
-        n_batches = self.z_output.shape[0]
-        delta = dC * grad_act # Hadamard product (elementwise)
-        
-        ## Compute gradients
-        grad_W_layer = self.h_prev.T @ delta / n_batches
-        grad_W_layer = grad_W_layer + self.W_layer * lmbd # Add regularization
-        grad_b_layer = np.sum(delta, axis=0).reshape(1, delta.shape[1]) / n_batches
-        self.grad_h_prev = delta @ self.W_layer.T
+        ## Backpropagate through the node
+        node = self.nodes[0]
+        node.backpropagate(dC_layer=dC, dC_time=None, lmbd=lmbd)
 
-        ## Update weights and bias
+        ## Update weights and biases
+        grad_W_layer = node.grad_W_layer
+        grad_b_layer = node.grad_b_layer
+
         self.W_layer -= self.scheduler_W_layer.update_change(grad_W_layer)
         self.b_layer -= self.scheduler_b_layer.update_change(grad_b_layer)
+
+        self.update_weights_all_nodes()
