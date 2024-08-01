@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-08-01T07:35:23.035Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="nqW3YD-wg1eqPJyM8AVJ" version="24.7.3" type="github" pages="15">
+<mxfile host="app.diagrams.net" modified="2024-08-01T07:43:21.428Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="fqjZKAOM12fVFO3nNCZW" version="24.7.3" type="github" pages="15">
   <diagram name="fcnn" id="sfRqCM7jmapI6OrAoU3U">
     <mxGraphModel dx="787" dy="527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -7747,25 +7747,25 @@
             <mxPoint x="539" y="460" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-74" value="$$\hat{\vec{y}}_1^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-74" value="$$\hat{y}_1^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="180" y="60" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-75" value="$$\hat{\vec{y}}_2^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-75" value="$$\hat{y}_2^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="240" y="60" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-76" value="$$\hat{\vec{y}}_3^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-76" value="$$\hat{y}_3^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="300" y="60" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-77" value="$$\vec{h}_{L,1}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-77" value="$$h_{L,1}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="150" y="220" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-78" value="$$\vec{h}_{L,2}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-78" value="$$h_{L,2}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="210" y="220" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-79" value="$$\vec{h}_{L,3}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-79" value="$$h_{L,3}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="270" y="220" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-80" value="$$\vec{h}_{L,4}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-80" value="$$h_{L,4}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="330" y="220" width="40" height="40" as="geometry" />
         </mxCell>
         <mxCell id="zchFjjGE-bsJhHMooA9z-81" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="zchFjjGE-bsJhHMooA9z-1" source="zchFjjGE-bsJhHMooA9z-77" target="zchFjjGE-bsJhHMooA9z-74">
@@ -7855,16 +7855,16 @@
             <mxPoint x="590" y="270" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-96" value="$$\hat{\vec{y}}_4^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-96" value="$$\hat{y}_4^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="360" y="60" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-97" value="$$\hat{\vec{y}}_5^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-97" value="$$\hat{y}_5^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="420" y="60" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-98" value="$$\vec{h}_{L,5}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-98" value="$$h_{L,5}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="390" y="220" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="zchFjjGE-bsJhHMooA9z-99" value="$$\vec{h}_{L,6}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
+        <mxCell id="zchFjjGE-bsJhHMooA9z-99" value="$$h_{L,6}^{(t)}$$" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="zchFjjGE-bsJhHMooA9z-1">
           <mxGeometry x="450" y="220" width="40" height="40" as="geometry" />
         </mxCell>
         <mxCell id="zchFjjGE-bsJhHMooA9z-100" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="zchFjjGE-bsJhHMooA9z-1" source="zchFjjGE-bsJhHMooA9z-80" target="zchFjjGE-bsJhHMooA9z-96">
