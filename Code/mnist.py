@@ -8,7 +8,7 @@ from RNN_module.RNN import RNN
 
 
 # MNIST consists of 60 000 samples. data_frac decides the portion of these we will use
-data_frac = 0.1
+data_frac = 1.0
 
 ## Retrieve and normalize the data (split into train and test)
 digits = datasets.mnist.load_data(path="mnist.npz")
