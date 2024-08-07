@@ -108,7 +108,7 @@ class RMS_prop(Scheduler):
 
 
 class Adam(Scheduler):
-    def __init__(self, eta, rho, rho2):
+    def __init__(self, eta, rho=0.9, rho2=0.999):
         super().__init__(eta)
         self.rho = rho
         self.rho2 = rho2
