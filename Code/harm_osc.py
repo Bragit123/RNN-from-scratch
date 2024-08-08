@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 m = 1.0  # mass
 c = 0.1  # damping coefficient
 k = 1.0  # spring constant
-F = lambda t: np.sin(t)  # forcing function
+# F = lambda t: np.sin(t)  # forcing function
+F = lambda t: 0  # forcing function
 
 # Time settings
 t_max = 30
@@ -43,10 +44,15 @@ from tensorflow.keras.regularizers import l2
 
 ## Some parameters
 
-# Good for my RNN
+# # Good for my RNN
+# eta = 0.001
+# lam = 0.01
+# n_nodes_hidden = 5
+
+# Good for my RNN (no forcing term)
 eta = 0.001
-lam = 0.01
-n_nodes_hidden = 5
+lam = 0.0001
+n_nodes_hidden = 3
 
 # # Good for Tensorflow
 # eta = 0.1
@@ -54,7 +60,7 @@ n_nodes_hidden = 5
 # n_nodes_hidden = 20
 
 # General
-epochs = 20
+epochs = 10
 batch_size = 1
 batches = 1
 seq_length = X.shape[0]
