@@ -43,15 +43,15 @@ from tensorflow.keras.regularizers import l2
 
 ## Some parameters
 
-# # Good for my RNN
-# eta = 0.001
-# lam = 0.01
-# n_nodes_hidden = 5
+# Good for my RNN
+eta = 0.001
+lam = 0.01
+n_nodes_hidden = 5
 
-# Good for Tensorflow
-eta = 0.1
-lam = 0.001
-n_nodes_hidden = 20
+# # Good for Tensorflow
+# eta = 0.1
+# lam = 0.001
+# n_nodes_hidden = 20
 
 # General
 epochs = 20
