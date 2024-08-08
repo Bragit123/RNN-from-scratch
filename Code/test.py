@@ -29,58 +29,23 @@ y_val = to_categorical(y_val)
 X_train = X_train.astype('float32') / 255.0
 X_val = X_val.astype('float32') / 255.0
 
-# # Parameters BEST SO FAR
+# Parameters BEST SO FAR
 eta = 0.001
 lmbd = 0.001
-n_features_hidden = 100
+n_features_hidden = 300
 n_dense_features = 10
-n_hidden_layers = 1
-n_dense_layers = 1
 epochs = 10
 batches = 60
-
-# # Parameters
-# eta = 0.001
-# lmbd = 0.001
-# n_features_hidden = 100
-# n_dense_features = 10
-# n_hidden_layers = 1
-# n_dense_layers = 1
-# epochs = 10
-# batches = 60
 
 n_features_output = 10
 batch_size = int(np.ceil(X_train.shape[0]/batches))
 
 # Build RNN model
 model = Sequential()
-if n_hidden_layers == 1:
-    model.add(SimpleRNN(n_features_hidden, activation='relu',
-                    input_shape=(X_train.shape[1], X_train.shape[2]),
-                    kernel_regularizer=l2(lmbd)))
-else:
-    for i in range(n_hidden_layers):
-        if i == 0:
-            model.add(SimpleRNN(n_features_hidden, activation='relu',
-                    input_shape=(X_train.shape[1], X_train.shape[2]),
-                    kernel_regularizer=l2(lmbd),
-                    return_sequences=True))
-        elif i == n_hidden_layers-1:
-            model.add(SimpleRNN(n_features_hidden, activation='relu',
-                    kernel_regularizer=l2(lmbd)))
-        else:
-            model.add(SimpleRNN(n_features_hidden, activation='relu',
-                    kernel_regularizer=l2(lmbd),
-                    return_sequences=True))
-
-if n_dense_layers == 1:
-    model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
-else:
-    for i in range(n_dense_layers):
-        if i == n_dense_layers-1:
-            model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
-        else:
-            model.add(Dense(n_dense_features, activation="sigmoid", kernel_regularizer=l2(lmbd)))
+model.add(SimpleRNN(n_features_hidden, activation='relu',
+                input_shape=(X_train.shape[1], X_train.shape[2]),
+                kernel_regularizer=l2(lmbd)))
+model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
 
 # Compile model
 optimizer = tf_Adam(learning_rate=eta)
@@ -119,13 +84,8 @@ scheduler = Adam(eta, 0.9, 0.999)
 
 rnn = RNN(cost_func, scheduler)
 rnn.add_InputLayer(n_featuers_input)
-for i in range(n_hidden_layers):
-    rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
-for i in range(n_dense_layers):
-    if i == n_dense_layers-1:
-        rnn.add_DenseLayer(n_features_output, act_func_output, is_last_layer=True)
-    else:
-        rnn.add_DenseLayer(n_features_output, act_func_output)
+rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
+rnn.add_DenseLayer(n_features_output, act_func_output, is_last_layer=True)
 
 scores = rnn.train(X_train, y_train, X_val, y_val, epochs, batches, lmbd, store_output=True)
 
@@ -152,41 +112,3 @@ plt.plot(epoch_arr, training_accuracy_history, label="(TF) Training accuracy")
 plt.plot(epoch_arr, val_accuracy_history, label="(TF) Validation accuracy")
 plt.legend()
 plt.savefig("mnist_accs.pdf")
-
-# hist = scores["y_val_history"]
-# print(hist[:,0,:])
-
-
-
-# N = 25
-# X = X_val[:N,:,:]
-# y = y_val[:N,:]
-
-# y_feed = rnn.feed_forward(X)
-# y_pred = rnn.predict(X)
-
-# print(y_feed)
-# print(y_pred)
-# print(y)
-
-# acc = np.all(y_pred == y, axis=0)
-# print(acc)
-# acc = np.all(y_pred == y, axis=-1)
-# acc = np.mean(acc)
-
-# print(acc)
-
-
-# ## Plot some images for visual understanding
-# n_rows = 5
-# n_cols = 5
-# fig, axs = plt.subplots(n_rows, n_cols, constrained_layout=True)
-# for row in range(n_rows):
-#     for col in range(n_cols):
-#         ax = axs[row, col]
-#         ax.set_axis_off()
-#         ind = row*n_cols + col
-#         label = np.argmax(y[ind])
-#         ax.set_title(label, loc="left")
-#         ax.imshow(X[ind])
-# fig.savefig("mnist_grid.pdf")
