@@ -14,7 +14,7 @@ from tensorflow.keras.utils import to_categorical # This allows using categorica
 # Extract a subset of the data
 n_train = X_train.shape[0]
 n_val = X_val.shape[0]
-data_frac = 0.1
+data_frac = 0.01
 train_end = int(n_train*data_frac)
 val_end = int(n_val*data_frac)
 X_train = X_train[:train_end]
@@ -33,24 +33,23 @@ X_val = X_val.astype('float32') / 255.0
 # eta = 0.001
 # lmbd = 0.1
 # n_features_hidden = 50
+# n_dense_features = 10
 # n_hidden_layers = 1
-# n_features_output = 10
+# n_dense_layers = 1
 # epochs = 5
 # batches = 60
-# batch_size = int(np.ceil(X_train.shape[0]/batches))
 
 # Parameters
 eta = 0.001
-lmbd = 0.1
-
-n_features_hidden = 50
+lmbd = 0.001
+n_features_hidden = 100
 n_dense_features = 10
-n_hidden_layers = 3
+n_hidden_layers = 1
 n_dense_layers = 1
-n_features_output = 10
-
-epochs = 5
+epochs = 10
 batches = 60
+
+n_features_output = 10
 batch_size = int(np.ceil(X_train.shape[0]/batches))
 
 # Build RNN model
@@ -81,7 +80,7 @@ else:
         if i == n_dense_layers-1:
             model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
         else:
-            model.add(Dense(n_dense_features, activation="relu", kernel_regularizer=l2(lmbd)))
+            model.add(Dense(n_dense_features, activation="sigmoid", kernel_regularizer=l2(lmbd)))
 
 # Compile model
 optimizer = tf_Adam(learning_rate=eta)
@@ -122,7 +121,11 @@ rnn = RNN(cost_func, scheduler)
 rnn.add_InputLayer(n_featuers_input)
 for i in range(n_hidden_layers):
     rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
-rnn.add_DenseLayer(n_features_output, act_func_output, is_last_layer=True)
+for i in range(n_dense_layers):
+    if i == n_dense_layers-1:
+        rnn.add_DenseLayer(n_features_output, act_func_output, is_last_layer=True)
+    else:
+        rnn.add_DenseLayer(n_features_output, act_func_output)
 
 scores = rnn.train(X_train, y_train, X_val, y_val, epochs, batches, lmbd, store_output=True)
 
