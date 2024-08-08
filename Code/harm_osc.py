@@ -6,7 +6,7 @@ m = 1.0  # mass
 c = 0.1  # damping coefficient
 k = 1.0  # spring constant
 # F = lambda t: np.sin(t)  # forcing function
-F = lambda t: 0  # forcing function
+F = lambda t: 0  # no forcing function
 
 # Time settings
 t_max = 30
