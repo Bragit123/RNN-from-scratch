@@ -30,16 +30,6 @@ X_train = X_train.astype('float32') / 255.0
 X_val = X_val.astype('float32') / 255.0
 
 # # Parameters BEST SO FAR
-# eta = 0.001
-# lmbd = 0.1
-# n_features_hidden = 50
-# n_dense_features = 10
-# n_hidden_layers = 1
-# n_dense_layers = 1
-# epochs = 5
-# batches = 60
-
-# Parameters
 eta = 0.001
 lmbd = 0.001
 n_features_hidden = 100
@@ -48,6 +38,16 @@ n_hidden_layers = 1
 n_dense_layers = 1
 epochs = 10
 batches = 60
+
+# # Parameters
+# eta = 0.001
+# lmbd = 0.001
+# n_features_hidden = 100
+# n_dense_features = 10
+# n_hidden_layers = 1
+# n_dense_layers = 1
+# epochs = 10
+# batches = 60
 
 n_features_output = 10
 batch_size = int(np.ceil(X_train.shape[0]/batches))
