@@ -1,131 +1,181 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-# Parameters for the damped harmonic oscillator
-m = 1.0  # mass
-c = 0.1  # damping coefficient
-k = 1.0  # spring constant
-F = lambda t: np.sin(t)  # forcing function
-
-# Time settings
-t_max = 30
-dt = 0.1
-t = np.arange(0, t_max, dt)
-
-# Initialize displacement and velocity
-x = np.zeros_like(t)
-v = np.zeros_like(t)
-x[0], v[0] = 1, 0  # initial conditions
-
-# Simulate the damped harmonic oscillator
-for i in range(1, len(t)):
-    a = (F(t[i-1]) - c * v[i-1] - k * x[i-1]) / m
-    v[i] = v[i-1] + a * dt
-    x[i] = x[i-1] + v[i] * dt
-
-# Plot the generated data
-plt.figure()
-plt.plot(t, x, label='Displacement x(t)')
-plt.xlabel('Time t')
-plt.ylabel('Displacement x')
-plt.legend()
-plt.savefig("Figures/HARM_OSC/euler_harm.pdf")
-
-X = x[:-1]
-y = x[1:]
-
 import tensorflow as tf
+from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import SimpleRNN, Dense
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.layers import SimpleRNN, Dense, Flatten, Dropout
+from tensorflow.keras.optimizers import Adam as tf_Adam
 from tensorflow.keras.regularizers import l2
+from tensorflow.keras.utils import to_categorical # This allows using categorical cross entropy as the cost function
 
+# Load MNIST dataset
+(X_train, y_train), (X_val, y_val) = mnist.load_data()
 
-## Some parameters
+# Extract a subset of the data
+n_train = X_train.shape[0]
+n_val = X_val.shape[0]
+data_frac = 0.1
+train_end = int(n_train*data_frac)
+val_end = int(n_val*data_frac)
+X_train = X_train[:train_end]
+X_val = X_val[:val_end]
+y_train = y_train[:train_end]
+y_val = y_val[:val_end]
 
-# # Good for my RNN
+y_train = to_categorical(y_train)
+y_val = to_categorical(y_val)
+
+# Normalize data
+X_train = X_train.astype('float32') / 255.0
+X_val = X_val.astype('float32') / 255.0
+
+# # Parameters BEST SO FAR
 # eta = 0.001
-# lam = 0.01
-# n_nodes_hidden = 5
+# lmbd = 0.1
+# n_features_hidden = 50
+# n_hidden_layers = 1
+# n_features_output = 10
+# epochs = 5
+# batches = 60
+# batch_size = int(np.ceil(X_train.shape[0]/batches))
 
-# Good for Tensorflow
-eta = 0.1
-lam = 0.001
-n_nodes_hidden = 20
+# Parameters
+eta = 0.001
+lmbd = 0.1
+n_features_hidden = 50
+n_hidden_layers = 1
+n_features_output = 10
+epochs = 5
+batches = 60
+batch_size = int(np.ceil(X_train.shape[0]/batches))
 
-# General
-epochs = 20
-batch_size = 1
-batches = 1
-seq_length = X.shape[0]
+# Build RNN model
+model = Sequential()
+if n_hidden_layers == 1:
+    model.add(SimpleRNN(n_features_hidden, activation='relu',
+                    input_shape=(X_train.shape[1], X_train.shape[2]),
+                    kernel_regularizer=l2(lmbd)))
+else:
+    for i in range(n_hidden_layers):
+        if i == 0:
+            model.add(SimpleRNN(n_features_hidden, activation='relu',
+                    input_shape=(X_train.shape[1], X_train.shape[2]),
+                    kernel_regularizer=l2(lmbd),
+                    return_sequences=True))
+        elif i == n_hidden_layers-1:
+            model.add(SimpleRNN(n_features_hidden, activation='relu',
+                    kernel_regularizer=l2(lmbd)))
+        else:
+            model.add(SimpleRNN(n_features_hidden, activation='relu',
+                    kernel_regularizer=l2(lmbd),
+                    return_sequences=True))
+            
+# model.add(SimpleRNN(n_features_hidden, activation='relu',
+#                     kernel_regularizer=l2(lmbd)))
+# model.add(Dropout(dropout_rate))
+model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
 
-# Build the RNN model
-model = Sequential([
-    SimpleRNN(units=n_nodes_hidden, activation='tanh', input_shape=(seq_length, 1), kernel_regularizer=l2(lam), return_sequences=True),
-    SimpleRNN(units=1, activation='linear', kernel_regularizer=l2(lam), return_sequences=True)
-])
+# Compile model
+optimizer = tf_Adam(learning_rate=eta)
+model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
 
+# Train model
+history = model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size,
+                    validation_data=(X_val, y_val))
 
-model.compile(optimizer=Adam(learning_rate=eta), loss='mse')
-model.summary()
+# Evaluate model
+val_loss, val_accuracy = model.evaluate(X_val, y_val)
+print(f'Val accuracy: {val_accuracy}, Val loss: {val_loss}')
 
-# Reshape
-X = X[np.newaxis, :, np.newaxis]
-y = y[np.newaxis, :, np.newaxis]
+# Training error history
+training_accuracy_history = history.history["accuracy"]
+val_accuracy_history = history.history["val_accuracy"]
+training_loss_history = history.history['loss']
+val_loss_history = history.history['val_loss']
 
-# Train the model
-history = model.fit(X, y, epochs=epochs, batch_size=batch_size)
+print("Training loss history:", training_loss_history)
+print("Validation loss history:", val_loss_history)
 
-# Make predictions
-y_pred = model.predict(X)
-
-# Plot predictions vs true values
-plt.figure()
-plt.plot(y[0,:,0], "k", label='True Values')
-plt.plot(y_pred[0,:], "r", label='Predictions')
-plt.xlabel('Time Step')
-plt.ylabel('Displacement')
-plt.legend()
-plt.savefig("Figures/HARM_OSC/tf_harm.pdf")
-
-# Evaluate the model
-loss = model.evaluate(X, y)
-print(f'Test Loss: {loss}')
 
 
 
 
 from RNN_module.RNN import RNN
-from RNN_module.funcs import CostOLS, tanh, identity
-from RNN_module.schedulers import Adam as my_Adam
+from RNN_module.funcs import CostLogReg, RELU, softmax
+from RNN_module.schedulers import Adam
 
-scheduler = my_Adam(eta)
-my_model = RNN(CostOLS, scheduler)
-my_model.add_InputLayer(1)
-my_model.add_RNNLayer(n_nodes_hidden, tanh)
-my_model.add_OutputLayer(1, identity)
-scores = my_model.train(X, y, epochs=epochs, batches=batches, lmbd=lam)
-my_pred = my_model.feed_forward(X)
+n_featuers_input = X_train.shape[2]
+act_func_hidden = RELU
+act_func_output = softmax
+cost_func = CostLogReg
+scheduler = Adam(eta, 0.9, 0.999)
 
+rnn = RNN(cost_func, scheduler)
+rnn.add_InputLayer(n_featuers_input)
+for i in range(n_hidden_layers):
+    rnn.add_RNNLayer(n_features_hidden, act_func_hidden)
+rnn.add_DenseLayer(n_features_output, act_func_output, is_last_layer=True)
 
-print("Tensorflow:")
-print(f"    Training error = {model.evaluate(X, y)}")
+scores = rnn.train(X_train, y_train, X_val, y_val, epochs, batches, lmbd, store_output=True)
 
-print("My model:")
-print(f"    Training error = {scores["train_error"][-1]}")
+epoch_arr = np.arange(1, epochs+1)
+train_error = scores["train_error"]
+val_error = scores["val_error"]
+train_accuracy = scores["train_accuracy"]
+val_accuracy = scores["val_accuracy"]
 
+## Plot error during training
 plt.figure()
-plt.plot(y[0,:,0], "k", label='True Values')
-plt.plot(my_pred[0,:,0], "r", label='Predictions')
-plt.xlabel('Time Step')
-plt.ylabel('Displacement')
+plt.plot(epoch_arr, train_error, label="Training error")
+plt.plot(epoch_arr, val_error, label="Validation error")
+plt.plot(epoch_arr, training_loss_history, label="(TF) Training error")
+plt.plot(epoch_arr, val_loss_history, label="(TF) Validation error")
 plt.legend()
-plt.savefig("Figures/HARM_OSC/my_harm.pdf")
+plt.savefig("mnist_error.pdf")
 
+## Plot accuracy during training
 plt.figure()
-plt.plot(scores["train_error"], label="My error")
-plt.plot(history.history["loss"], label="Tensorflow error")
-plt.xlabel("Epochs")
-plt.ylabel("Error")
+plt.plot(epoch_arr, train_accuracy, label="Training accuracy")
+plt.plot(epoch_arr, val_accuracy, label="Validation accuracy")
+plt.plot(epoch_arr, training_accuracy_history, label="(TF) Training accuracy")
+plt.plot(epoch_arr, val_accuracy_history, label="(TF) Validation accuracy")
 plt.legend()
-plt.savefig("Figures/HARM_OSC/error.pdf")
+plt.savefig("mnist_accs.pdf")
+
+# hist = scores["y_val_history"]
+# print(hist[:,0,:])
+
+
+
+# N = 25
+# X = X_val[:N,:,:]
+# y = y_val[:N,:]
+
+# y_feed = rnn.feed_forward(X)
+# y_pred = rnn.predict(X)
+
+# print(y_feed)
+# print(y_pred)
+# print(y)
+
+# acc = np.all(y_pred == y, axis=0)
+# print(acc)
+# acc = np.all(y_pred == y, axis=-1)
+# acc = np.mean(acc)
+
+# print(acc)
+
+
+# ## Plot some images for visual understanding
+# n_rows = 5
+# n_cols = 5
+# fig, axs = plt.subplots(n_rows, n_cols, constrained_layout=True)
+# for row in range(n_rows):
+#     for col in range(n_cols):
+#         ax = axs[row, col]
+#         ax.set_axis_off()
+#         ind = row*n_cols + col
+#         label = np.argmax(y[ind])
+#         ax.set_title(label, loc="left")
+#         ax.imshow(X[ind])
+# fig.savefig("mnist_grid.pdf")

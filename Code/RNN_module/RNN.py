@@ -98,7 +98,7 @@ class RNN:
         """
         X = input to RNN.
         X_shape = (batch_size, sequence_length, n_features)
-        output_shape = X_shape if OutputLayer; (batch_size, n_features) if SingleOutputLayer
+        output_shape = X_shape if OutputLayer; (batch_size, n_features) if DenseLayer as output
         """
         ## Initialize predicted array
         output = self.feed_forward(X)
