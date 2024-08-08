@@ -42,9 +42,13 @@ X_val = X_val.astype('float32') / 255.0
 # Parameters
 eta = 0.001
 lmbd = 0.1
+
 n_features_hidden = 50
-n_hidden_layers = 1
+n_dense_features = 10
+n_hidden_layers = 3
+n_dense_layers = 1
 n_features_output = 10
+
 epochs = 5
 batches = 60
 batch_size = int(np.ceil(X_train.shape[0]/batches))
@@ -69,11 +73,15 @@ else:
             model.add(SimpleRNN(n_features_hidden, activation='relu',
                     kernel_regularizer=l2(lmbd),
                     return_sequences=True))
-            
-# model.add(SimpleRNN(n_features_hidden, activation='relu',
-#                     kernel_regularizer=l2(lmbd)))
-# model.add(Dropout(dropout_rate))
-model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
+
+if n_dense_layers == 1:
+    model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
+else:
+    for i in range(n_dense_layers):
+        if i == n_dense_layers-1:
+            model.add(Dense(10, activation='softmax', kernel_regularizer=l2(lmbd)))
+        else:
+            model.add(Dense(n_dense_features, activation="relu", kernel_regularizer=l2(lmbd)))
 
 # Compile model
 optimizer = tf_Adam(learning_rate=eta)
